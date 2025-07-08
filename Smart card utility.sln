@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smart_card_utility", "Smart_card_utility\Smart_card_utility.csproj", "{F07656BC-9BC5-424B-8451-32CA34AFD479}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Public key certification processing", "Public key certification processing\Public key certification processing.csproj", "{9C9C46D4-C923-488D-8DC2-ADDCACE1541D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encryptions", "Encryptions\Encryptions.csproj", "{AF3F0AB7-85E2-4C09-B1B5-D2DE6987893B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCard", "SmartCard\SmartCard.csproj", "{1EB9DE54-CB03-40F2-9A30-9343C4A29F0D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F07656BC-9BC5-424B-8451-32CA34AFD479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F07656BC-9BC5-424B-8451-32CA34AFD479}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F07656BC-9BC5-424B-8451-32CA34AFD479}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F07656BC-9BC5-424B-8451-32CA34AFD479}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C9C46D4-C923-488D-8DC2-ADDCACE1541D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C9C46D4-C923-488D-8DC2-ADDCACE1541D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C9C46D4-C923-488D-8DC2-ADDCACE1541D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C9C46D4-C923-488D-8DC2-ADDCACE1541D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF3F0AB7-85E2-4C09-B1B5-D2DE6987893B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF3F0AB7-85E2-4C09-B1B5-D2DE6987893B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF3F0AB7-85E2-4C09-B1B5-D2DE6987893B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF3F0AB7-85E2-4C09-B1B5-D2DE6987893B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EB9DE54-CB03-40F2-9A30-9343C4A29F0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EB9DE54-CB03-40F2-9A30-9343C4A29F0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EB9DE54-CB03-40F2-9A30-9343C4A29F0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EB9DE54-CB03-40F2-9A30-9343C4A29F0D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {93D8A1E3-9E17-4FC3-B1CA-066D5BB0FE9C}
+	EndGlobalSection
+EndGlobal
