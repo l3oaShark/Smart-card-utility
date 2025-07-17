@@ -67,27 +67,32 @@ namespace SmartCard
             return ("8482000010" + exthernal_data);
         }
 
-        public static bool AuthenticateCard(string readerName, byte[] key, byte[] kcv)
+        public static string Auto_Authenticate(string readerName, string key)
         {
-            // ตัวอย่าง APDU Authenticate (ต้องเปลี่ยนตาม protocol ของ card)
-            // สมมติใช้ INS=0x82, P1=0x00, P2=0x00, Lc=key.Length + kcv.Length, data=key + kcv
-            List<byte> apdu = new List<byte>();
-            apdu.Add(0x00); // CLA
-            apdu.Add(0x82); // INS Authenticate (ตัวอย่าง)
-            apdu.Add(0x00); // P1
-            apdu.Add(0x00); // P2
-            apdu.Add((byte)(key.Length + kcv.Length)); // Lc
-            apdu.AddRange(key);
-            apdu.AddRange(kcv);
-            apdu.Add(0x00); // Le
+            byte[] apdu = Utils.HexStringToBytes("00 A4 04 00 09 A0 00 00 01 67 41 30 00 FF");
+            byte[] apdu2 = Utils.HexStringToBytes("00 A4 04 00 08 A0 00 00 01 51 00 00 00");
+            byte[] apdu3 = Utils.HexStringToBytes("80 50 00 00 08 00 00 00 00 00 00 00 00");
 
-            var response = ApduHelper.TransmitApduCommand(readerName, apdu.ToArray());
+            byte[] response = ApduHelper.TransmitApduCommand(readerName, apdu);
+            byte[] dataOnly = response.Take(response.Length - 2).ToArray();
+            string hex = BitConverter.ToString(response).Replace("-", " ");
 
-            if (response == null || response.Length < 2) return false;
+            byte[] response2 = ApduHelper.TransmitApduCommand(readerName, apdu2);
+            string hex2 = BitConverter.ToString(response2).Replace("-", " ");
 
-            // Check SW1 SW2 == 0x90 0x00 for success
-            int len = response.Length;
-            return (response[len - 2] == 0x90 && response[len - 1] == 0x00);
+            byte[] response3 = ApduHelper.TransmitApduCommand(readerName, apdu3);
+            string hex3 = BitConverter.ToString(response3).Replace("-", " ");
+
+            string host_challenge = "0000000000000000";
+            string data_auth = Authenticate.Exthernal_Authenticate(hex3, key, "", host_challenge, Authenticate.Mode_Derivation.CPG211);
+            byte[] responseAuth = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes(data_auth));
+
+            byte[] response_ISD = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("80 F2 80 00 02 4F 00"));
+            string sid = BitConverter.ToString(response_ISD).Replace("-", "");
+            sid = sid.Substring(2, Convert.ToInt32(sid.Substring(0, 2)) * 2);
+
+
+            return sid;
         }
 
     }

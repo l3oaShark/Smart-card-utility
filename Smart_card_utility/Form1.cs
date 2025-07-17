@@ -2,6 +2,7 @@
 using MaterialSkin;
 using MaterialSkin.Controls;
 using Public_key_certification_processing;
+using SmartCard;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,8 +10,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using SmartCard;
+using System.Xml.Linq;
 using static SmartCard.TlvParser;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Smart_card_utility
 {
@@ -38,10 +41,11 @@ namespace Smart_card_utility
 
         StringBuilder sb_message = new StringBuilder();
 
-
         private IntPtr hContext = IntPtr.Zero;
         private SmartCardManager smart_card = new SmartCardManager();
         private IntPtr hCard = IntPtr.Zero;
+
+        private List<Applications> application = new List<Applications>();
 
         Utils.CryptoMode cryptoMode;
         public Main()
@@ -849,6 +853,82 @@ namespace Smart_card_utility
             txt_ATR.SelectionStart = selectionStart;
         }
 
+        private void loadcard_info(List<CPLC> cplc , List<CardInfo> cardInfo, List<Applications>apps)
+        {
+            if (cplc != null)
+            {
+                txt_ICFabricator.Text = cplc.Find(x => x.IC_Fabricator != null)?.IC_Fabricator ?? "";
+                txt_ICType.Text = cplc.Find(x => x.IC_Type != null)?.IC_Type ?? "";
+                txt_osIdentifier.Text = cplc.Find(x => x.OS_ID != null)?.OS_ID ?? "";
+                txt_osRelease_date.Text = cplc.Find(x => x.OS_release_date != null)?.OS_release_date ?? "";
+                txt_osRelease_level.Text = cplc.Find(x => x.OS_release_level != null)?.OS_release_level ?? "";
+                txt_ICFabricatorDate.Text = cplc.Find(x => x.IC_Fabrication_Date != null)?.IC_Fabrication_Date ?? "";
+                txt_icSerailnumber.Text = cplc.Find(x => x.IC_Serial_Number != null)?.IC_Serial_Number ?? "";
+                txt_IC_batchIdentifier.Text = cplc.Find(x => x.IC_Batch_Identifier != null)?.IC_Batch_Identifier ?? "";
+                txt_ICMod.Text = cplc.Find(x => x.IC_Module_Fabricator != null)?.IC_Module_Fabricator ?? "";
+                txt_ICMPDate.Text = cplc.Find(x => x.IC_Module_Packaging_Date != null)?.IC_Module_Packaging_Date ?? "";
+                txt_ICCManufacturer.Text = cplc.Find(x => x.ICC_Manufacturer != null)?.ICC_Manufacturer ?? "";
+                txt_ICEmbeddingDate.Text = cplc.Find(x => x.IC_Embedding_Date != null)?.IC_Embedding_Date ?? "";
+                txt_ICPrePersonalizer.Text = cplc.Find(x => x.IC_Pre_Personalizer != null)?.IC_Pre_Personalizer ?? "";
+                txt_PrePersoDate.Text = cplc.Find(x => x.IC_Pre_Perso_Equipment_Date != null)?.IC_Pre_Perso_Equipment_Date ?? "";
+                txt_PrePersoEqp.Text = cplc.Find(x => x.IC_Pre_Perso_Equipment_ID != null)?.IC_Pre_Perso_Equipment_ID ?? "";
+                txt_ICPersonalizer.Text = cplc.Find(x => x.IC_Personalizer != null)?.IC_Personalizer ?? "";
+                txt_ICPersoDate.Text = cplc.Find(x => x.IC_Personalization_Date != null)?.IC_Personalization_Date ?? "";
+                txt_ICPersoEquipID.Text = cplc.Find(x => x.IC_Pre_Perso_Equipment_ID != null)?.IC_Pre_Perso_Equipment_ID ?? "";
+
+            }
+
+            if (cardInfo != null)
+            {
+                tv_card.Nodes.Clear();
+                //tv_card.Nodes.Add("Issuer Security Domain(CM)");
+
+                TreeNode card = new TreeNode("Card");
+                TreeNode cm = new TreeNode("Issuer Security Domain(CM)");
+                TreeNode executable = new TreeNode("Executable Load Files");
+                TreeNode applications = new TreeNode("Applications");
+
+                foreach (var kvp in cardInfo)
+                {
+                    //tv_card.Nodes[0].Nodes.Add(kvp.value);
+                    TreeNode cardNode = new TreeNode(kvp.value);
+                    executable.Nodes.Add(cardNode);
+                    executable.Expand();
+                    if (kvp.applete != null)
+                    {
+                        TreeNode applete = new TreeNode("applet");
+                        foreach (var app in kvp.applete)
+                        {
+                            //tv_card.Nodes[1].Nodes[no].Nodes.Add(app);
+                            TreeNode appNode = new TreeNode(app);
+                            applete.Nodes.Add(appNode);
+                        }
+                        cardNode.Nodes.Add(applete);
+                    }
+                }
+                foreach (var app in apps)
+                {
+                    TreeNode ap = new TreeNode(app.app);
+                    ap.Tag = app;
+                    applications.Nodes.Add(ap);
+                    applications.Expand();
+                }
+
+                card.Nodes.Add(cm);
+                card.Nodes.Add(executable);
+                card.Nodes.Add(applications);
+                card.Expand();
+
+
+                tv_card.Nodes.Add(card);
+
+                //tv_card.ExpandAll();
+            }
+            else
+            {
+                MessageBox.Show("Not found card info.");
+            }
+        }
         private void btn_cardInfo_Click(object sender, EventArgs e)
         {
             try
@@ -860,37 +940,18 @@ namespace Smart_card_utility
                         hCard = SmartCardManager.PowerOnCard(hContext, cbb_cardReader2.SelectedItem.ToString(), out _);
                     }
 
-                    var (cardInfo, aid, atr) = SmartCardInfo.ReadCardInfo(
+                    var (cardInfo, cplc,apps, aid, atr) = SmartCardInfo.ReadCardInfo(
                     cbb_cardReader2.Text,
                     cbb_kmcValue1.Text,
                     HexStringToByteArray(txt_kmcKCV1.Text)
                      );
                     txt_ATR.Text = atr;
                     //txt_AID.Text = aid;
+                    cbb_cardManager.Items.Add(aid);
+                    cbb_cardmanager2.Items.Add(aid);
 
-                    if (cardInfo != null)
-                    {
-                        StringBuilder sb = new StringBuilder();
-                        foreach (var kvp in cardInfo)
-                        {
-                            sb.AppendLine($"Length: {kvp.legnth}, Value: {kvp.value}, Package: {kvp.package}");
-                            if (kvp.applete != null)
-                            {
-                                foreach (var app in kvp.applete)
-                                {
-                                    sb.AppendLine($"Applet: {app}");
-                                }
-                            }
-                            sb.AppendLine("\n");
-                        }
+                    loadcard_info(cplc, cardInfo,apps);
 
-                        txt_cardInfo.Text = sb.ToString();
-                    }
-
-                    else
-                    {
-                        MessageBox.Show("ไม่พบข้อมูล card info หรืออ่านล้มเหลว");
-                    }
                 }
             }
             catch (Exception ex)
@@ -955,6 +1016,107 @@ namespace Smart_card_utility
                 cbb_kmcValue3.Visible = false;
                 txt_kmcKCV3.Visible = false;
             }
+        }
+
+        private void btn_extAuth_Click(object sender, EventArgs e)
+        {
+
+            if (cbb_cardReader2.SelectedItem != null)
+            {
+                hCard = SmartCardManager.PowerOnCard(hContext, cbb_cardReader2.SelectedItem.ToString(), out _);
+            }
+
+            byte[] atr = SmartCardInfo.GetATR(cbb_cardReader2.Text);
+            string hexatr = BitConverter.ToString(atr).Replace("-", " ");
+            txt_ATR.Text = hexatr;
+
+            byte[] apdu = Utils.HexStringToBytes("00 A4 04 00 09 A0 00 00 01 67 41 30 00 FF");
+            byte[] apdu2 = Utils.HexStringToBytes("00 A4 04 00 08 A0 00 00 01 51 00 00 00");
+            byte[] apdu3 = Utils.HexStringToBytes("80 50 00 00 08 00 00 00 00 00 00 00 00");
+
+            byte[] response = ApduHelper.TransmitApduCommand(cbb_cardReader2.Text, apdu);
+            byte[] dataOnly = response.Take(response.Length - 2).ToArray();
+            string hex = BitConverter.ToString(response).Replace("-", " ");
+
+            byte[] response2 = ApduHelper.TransmitApduCommand(cbb_cardReader2.Text, apdu2);
+            string hex2 = BitConverter.ToString(response2).Replace("-", " ");
+
+            byte[] response3 = ApduHelper.TransmitApduCommand(cbb_cardReader2.Text, apdu3);
+            string hex3 = BitConverter.ToString(response3).Replace("-", " ");
+
+            string host_challenge = "0000000000000000";
+            string data_auth = Authenticate.Exthernal_Authenticate(hex3, cbb_kmcValue1.Text, "", host_challenge, Authenticate.Mode_Derivation.CPG211);
+
+            byte[] responseAuth = ApduHelper.TransmitApduCommand(cbb_cardReader2.Text, Utils.HexStringToBytes(data_auth));
+
+            MessageBox.Show("External Authentication command sent successfully.\n" +
+                "ATR: " + hexatr + "\n" +
+                "AID Response: " + hex + "\n" +
+                "Data Auth Response: " + BitConverter.ToString(responseAuth).Replace("-", " "),
+                "External Authentication", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btn_readerRefresh_Click(object sender, EventArgs e)
+        {
+            LoadReadersToComboBox();
+        }
+
+        private void btn_refresh2_Click(object sender, EventArgs e)
+        {
+            LoadReadersToComboBox();
+
+        }
+
+        private void btn_appDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you want to delete this application?: " + application[0].app, "confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.Yes)
+            {
+               bool deleted = SmartCardManager.DeleteApp(cbb_cardReader2.Text, cbb_kmcValue1.Text, application);
+
+                if (deleted)
+                {
+                    btn_cardInfo_Click(sender, e);
+
+                    MessageBox.Show("Application deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+               
+                
+            }
+            
+        }
+
+        private void tv_card_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            TreeNode selectedNode = e.Node;
+                
+            string parent = selectedNode.Parent != null ? selectedNode.Parent.Text : "ไม่มี parent";
+            if (parent == "Applications")
+            {
+                btn_appDelete.Enabled = true;
+                
+                if (selectedNode.Tag is Applications app)
+                {
+                    application.Clear();
+                    application.Add(new Applications
+                    {
+                        length = app.length,
+                        app = app.app,
+                        details = app.details
+                    });
+                }
+            }
+            else
+            {
+                btn_appDelete.Enabled = false;
+                application.Clear();
+            }
+
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Encryptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -6,6 +7,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static SmartCard.TlvParser;
 
 namespace SmartCard
 {
@@ -175,7 +177,26 @@ namespace SmartCard
             return atr;
         }
 
+        public static bool DeleteApp(string readerName,string key, List<Applications> app)
+        {
+            try
+            {
+                string isd = Authenticate.Auto_Authenticate(readerName, key);
+                string apps = "4F"+app[0].length + app[0].app;
+                int appsByteLength = Utils.HexStringToBytes(apps).Length;
+                string apdu_delete = "80 E4 00 00 "+ appsByteLength.ToString("X2") + apps;
 
+                byte[] response_delete = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes(apdu_delete));
+                string delete = BitConverter.ToString(response_delete).Replace("-", " ");
+
+                return true;
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message, "Delete Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
 
 
         //public SmartCardManager()

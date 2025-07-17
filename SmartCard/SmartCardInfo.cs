@@ -55,38 +55,42 @@ namespace SmartCard
             return tlvs;
         }
 
-        public static (List<CardInfo> cardInfos, string aid, string atr) ReadCardInfo(string readerName, string key, byte[] kcv)
+        public static (List<CardInfo> cardInfos,List<CPLC>cplc,List<Applications>apps ,string aid, string atr) ReadCardInfo(string readerName, string key, byte[] kcv)
         {
             byte[] atr = GetATR(readerName);
             string hexatr = BitConverter.ToString(atr).Replace("-", " ");
 
 
-            byte[] apdu  = Utils.HexStringToBytes("00 A4 04 00 09 A0 00 00 01 67 41 30 00 FF"); 
-            byte[] apdu2 = Utils.HexStringToBytes("00 A4 04 00 08 A0 00 00 01 51 00 00 00");
-            byte[] apdu3 = Utils.HexStringToBytes("80 50 00 00 08 00 00 00 00 00 00 00 00");
-            
+            //byte[] apdu  = Utils.HexStringToBytes("00 A4 04 00 09 A0 00 00 01 67 41 30 00 FF"); 
+            //byte[] apdu2 = Utils.HexStringToBytes("00 A4 04 00 08 A0 00 00 01 51 00 00 00");
+            //byte[] apdu3 = Utils.HexStringToBytes("80 50 00 00 08 00 00 00 00 00 00 00 00");
 
-            byte[] response = ApduHelper.TransmitApduCommand(readerName, apdu);
-            byte[] dataOnly = response.Take(response.Length - 2).ToArray();
-            string hex = BitConverter.ToString(response).Replace("-", " ");
+            //byte[] response = ApduHelper.TransmitApduCommand(readerName, apdu);
+            //byte[] dataOnly = response.Take(response.Length - 2).ToArray();
+            //string hex = BitConverter.ToString(response).Replace("-", " ");
 
-            byte[] response2 = ApduHelper.TransmitApduCommand(readerName, apdu2);
-            string hex2 = BitConverter.ToString(response2).Replace("-", " ");
+            //byte[] response2 = ApduHelper.TransmitApduCommand(readerName, apdu2);
+            //string hex2 = BitConverter.ToString(response2).Replace("-", " ");
 
-            byte[] response3 = ApduHelper.TransmitApduCommand(readerName, apdu3);
-            string hex3 = BitConverter.ToString(response3).Replace("-", " ");
+            //byte[] response3 = ApduHelper.TransmitApduCommand(readerName, apdu3);
+            //string hex3 = BitConverter.ToString(response3).Replace("-", " ");
 
-            string host_challenge = "0000000000000000";
-            string data_auth = Authenticate.Exthernal_Authenticate(hex3, key, "", host_challenge, Authenticate.Mode_Derivation.CPG211);
+            //string host_challenge = "0000000000000000";
+            //string data_auth = Authenticate.Exthernal_Authenticate(hex3, key, "", host_challenge, Authenticate.Mode_Derivation.CPG211);
 
-            byte[] responseAuth = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes(data_auth));
-            //string hex4 = BitConverter.ToString(responseAuth).Replace("-", " ");
+            //byte[] responseAuth = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes(data_auth));
+            ////string hex4 = BitConverter.ToString(responseAuth).Replace("-", " ");
+            ///
+            //byte[] response_ISD = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("80 F2 80 00 02 4F 00"));
+            //string isd = BitConverter.ToString(response_ISD).Replace("-", "");
 
-            byte[] response_AID = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("80 F2 80 00 02 4F 00"));
-            string aid = BitConverter.ToString(response_AID).Replace("-", " ");
+            string isd = Authenticate.Auto_Authenticate(readerName, key);
 
+                                                                                                              
             byte[] response_Applications = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("80 F2 40 00 02 4F 00"));
-            //string application = BitConverter.ToString(response_Applications).Replace("-", " ");
+            string application = BitConverter.ToString(response_Applications).Replace("-", " ");
+            var apps = ParseApplications(application);
+
 
             byte[] response_CardInfo = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("80 F2 10 00 02 4F 00"));
             string cardInfo = BitConverter.ToString(response_CardInfo).Replace("-", " ");
@@ -94,11 +98,33 @@ namespace SmartCard
             byte[] response7 = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("80 F2 10 01 02 4F 00"));
             //string hex8 = BitConverter.ToString(response7).Replace("-", " ");
 
-
             var cardInfos = ParseCardInfo(cardInfo);
 
 
-            return (cardInfos, aid, hexatr);
+
+            //string hex_aid = BitConverter.ToString(apdu_aid).Replace("-", " ");
+            //byte[] apdu_aid = Utils.HexStringToBytes("00 A4 04 00 08 A0 00 00 00 03 00 00 00");
+
+            //byte[] responseid = ApduHelper.TransmitApduCommand(readerName, apdu_aid);
+            //string hex_resaid = BitConverter.ToString(responseid).Replace("-", " ");
+
+            byte[] apdu_cplc = Utils.HexStringToBytes("80 CA 9F 7F 00");
+            string hex_acplc = BitConverter.ToString(apdu_cplc).Replace("-", " ");
+
+
+            byte[] response_cplc = ApduHelper.TransmitApduCommand(readerName, apdu_cplc);
+
+            if (response_cplc.Length == 2 && response_cplc[0] == 0x6C)
+            {
+                byte correctLength = response_cplc[1]; // SW2 = correct Le
+                byte[] apdu_cplc_correct = Utils.HexStringToBytes("80CA9F7F" + correctLength.ToString("X2"));
+                response_cplc = ApduHelper.TransmitApduCommand(readerName, apdu_cplc_correct);
+            }
+            string hex_cplc = BitConverter.ToString(response_cplc).Replace("-", " ");
+            var cplc_info = ParseCPLC(hex_cplc);
+
+
+            return (cardInfos, cplc_info, apps, isd, hexatr);
         }
         public static byte[] GetATR(string readerName)
         {

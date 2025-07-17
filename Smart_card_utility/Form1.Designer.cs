@@ -46,7 +46,6 @@ namespace Smart_card_utility
             this.Openfile2 = new MaterialSkin.Controls.MaterialButton();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.materialToolStripMenuItem1 = new MaterialSkin.Controls.MaterialToolStripMenuItem();
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dt_gv = new System.Windows.Forms.DataGridView();
@@ -68,7 +67,7 @@ namespace Smart_card_utility
             this.btn_powerOn = new MaterialSkin.Controls.MaterialButton();
             this.cbb_cardReader1 = new MaterialSkin.Controls.MaterialComboBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.txt_cardInfo = new MaterialSkin.Controls.MaterialMultiLineTextBox();
+            this.tv_card = new System.Windows.Forms.TreeView();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txt_AID = new MaterialSkin.Controls.MaterialTextBox();
@@ -76,9 +75,9 @@ namespace Smart_card_utility
             this.txt_ICPersoEquipID = new MaterialSkin.Controls.MaterialTextBox();
             this.txt_ICFabricator = new MaterialSkin.Controls.MaterialTextBox();
             this.txt_ICPersoDate = new MaterialSkin.Controls.MaterialTextBox();
-            this.txt_osRelease = new MaterialSkin.Controls.MaterialTextBox();
+            this.txt_osRelease_date = new MaterialSkin.Controls.MaterialTextBox();
             this.txt_ICPersonalizer = new MaterialSkin.Controls.MaterialTextBox();
-            this.txt_osRelease2 = new MaterialSkin.Controls.MaterialTextBox();
+            this.txt_osRelease_level = new MaterialSkin.Controls.MaterialTextBox();
             this.txt_PrePersoEqp = new MaterialSkin.Controls.MaterialTextBox();
             this.txt_IC_batchIdentifier = new MaterialSkin.Controls.MaterialTextBox();
             this.txt_PrePersoDate = new MaterialSkin.Controls.MaterialTextBox();
@@ -89,14 +88,13 @@ namespace Smart_card_utility
             this.txt_ICFabricatorDate = new MaterialSkin.Controls.MaterialTextBox();
             this.txt_ICEmbeddingDate = new MaterialSkin.Controls.MaterialTextBox();
             this.txt_ICType = new MaterialSkin.Controls.MaterialTextBox();
-            this.txt_ICManufacturer = new MaterialSkin.Controls.MaterialTextBox();
+            this.txt_ICCManufacturer = new MaterialSkin.Controls.MaterialTextBox();
             this.txt_ICMod = new MaterialSkin.Controls.MaterialTextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.txt_ATR = new MaterialSkin.Controls.MaterialTextBox();
             this.cbb_cardManager = new MaterialSkin.Controls.MaterialComboBox();
             this.btn_extAuth = new MaterialSkin.Controls.MaterialButton();
             this.btn_appDelete = new MaterialSkin.Controls.MaterialButton();
-            this.btn_cardImage = new MaterialSkin.Controls.MaterialButton();
             this.btn_cardInfo = new MaterialSkin.Controls.MaterialButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.rdb_noKMC = new MaterialSkin.Controls.MaterialRadioButton();
@@ -374,24 +372,17 @@ namespace Smart_card_utility
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.materialToolStripMenuItem1});
+            this.toolStripMenuItem1});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(269, 60);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 56);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(268, 24);
-            this.toolStripMenuItem1.Text = "toolStripMenuItem1";
-            // 
-            // materialToolStripMenuItem1
-            // 
-            this.materialToolStripMenuItem1.AutoSize = false;
-            this.materialToolStripMenuItem1.Name = "materialToolStripMenuItem1";
-            this.materialToolStripMenuItem1.Size = new System.Drawing.Size(128, 32);
-            this.materialToolStripMenuItem1.Text = "materialToolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(210, 24);
+            this.toolStripMenuItem1.Text = "copy";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // materialTabControl1
             // 
@@ -803,7 +794,7 @@ namespace Smart_card_utility
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.txt_cardInfo);
+            this.tabPage3.Controls.Add(this.tv_card);
             this.tabPage3.Controls.Add(this.label2);
             this.tabPage3.Controls.Add(this.label1);
             this.tabPage3.Controls.Add(this.txt_AID);
@@ -812,7 +803,6 @@ namespace Smart_card_utility
             this.tabPage3.Controls.Add(this.cbb_cardManager);
             this.tabPage3.Controls.Add(this.btn_extAuth);
             this.tabPage3.Controls.Add(this.btn_appDelete);
-            this.tabPage3.Controls.Add(this.btn_cardImage);
             this.tabPage3.Controls.Add(this.btn_cardInfo);
             this.tabPage3.Controls.Add(this.groupBox4);
             this.tabPage3.Controls.Add(this.btn_readerRefresh);
@@ -827,21 +817,15 @@ namespace Smart_card_utility
             this.tabPage3.Text = "SmartCard Info";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // txt_cardInfo
+            // tv_card
             // 
-            this.txt_cardInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tv_card.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txt_cardInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.txt_cardInfo.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txt_cardInfo.Depth = 0;
-            this.txt_cardInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txt_cardInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.txt_cardInfo.Location = new System.Drawing.Point(780, 29);
-            this.txt_cardInfo.MouseState = MaterialSkin.MouseState.HOVER;
-            this.txt_cardInfo.Name = "txt_cardInfo";
-            this.txt_cardInfo.Size = new System.Drawing.Size(570, 760);
-            this.txt_cardInfo.TabIndex = 23;
-            this.txt_cardInfo.Text = "";
+            this.tv_card.Location = new System.Drawing.Point(797, 26);
+            this.tv_card.Name = "tv_card";
+            this.tv_card.Size = new System.Drawing.Size(553, 766);
+            this.tv_card.TabIndex = 24;
+            this.tv_card.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tv_card_AfterSelect);
             // 
             // label2
             // 
@@ -891,9 +875,9 @@ namespace Smart_card_utility
             this.panel1.Controls.Add(this.txt_ICPersoEquipID);
             this.panel1.Controls.Add(this.txt_ICFabricator);
             this.panel1.Controls.Add(this.txt_ICPersoDate);
-            this.panel1.Controls.Add(this.txt_osRelease);
+            this.panel1.Controls.Add(this.txt_osRelease_date);
             this.panel1.Controls.Add(this.txt_ICPersonalizer);
-            this.panel1.Controls.Add(this.txt_osRelease2);
+            this.panel1.Controls.Add(this.txt_osRelease_level);
             this.panel1.Controls.Add(this.txt_PrePersoEqp);
             this.panel1.Controls.Add(this.txt_IC_batchIdentifier);
             this.panel1.Controls.Add(this.txt_PrePersoDate);
@@ -904,7 +888,7 @@ namespace Smart_card_utility
             this.panel1.Controls.Add(this.txt_ICFabricatorDate);
             this.panel1.Controls.Add(this.txt_ICEmbeddingDate);
             this.panel1.Controls.Add(this.txt_ICType);
-            this.panel1.Controls.Add(this.txt_ICManufacturer);
+            this.panel1.Controls.Add(this.txt_ICCManufacturer);
             this.panel1.Controls.Add(this.txt_ICMod);
             this.panel1.Location = new System.Drawing.Point(7, 473);
             this.panel1.Name = "panel1";
@@ -920,7 +904,7 @@ namespace Smart_card_utility
             this.txt_ICPersoEquipID.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_ICPersoEquipID.Hint = "IC Perso Equip ID";
             this.txt_ICPersoEquipID.LeadingIcon = null;
-            this.txt_ICPersoEquipID.Location = new System.Drawing.Point(313, 534);
+            this.txt_ICPersoEquipID.Location = new System.Drawing.Point(208, 534);
             this.txt_ICPersoEquipID.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ICPersoEquipID.MaxLength = 50;
             this.txt_ICPersoEquipID.MouseState = MaterialSkin.MouseState.OUT;
@@ -947,7 +931,7 @@ namespace Smart_card_utility
             this.txt_ICFabricator.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_ICFabricator.Multiline = false;
             this.txt_ICFabricator.Name = "txt_ICFabricator";
-            this.txt_ICFabricator.Size = new System.Drawing.Size(283, 50);
+            this.txt_ICFabricator.Size = new System.Drawing.Size(178, 50);
             this.txt_ICFabricator.TabIndex = 20;
             this.txt_ICFabricator.Text = "";
             this.txt_ICFabricator.TrailingIcon = null;
@@ -968,30 +952,30 @@ namespace Smart_card_utility
             this.txt_ICPersoDate.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_ICPersoDate.Multiline = false;
             this.txt_ICPersoDate.Name = "txt_ICPersoDate";
-            this.txt_ICPersoDate.Size = new System.Drawing.Size(283, 50);
+            this.txt_ICPersoDate.Size = new System.Drawing.Size(178, 50);
             this.txt_ICPersoDate.TabIndex = 34;
             this.txt_ICPersoDate.Text = "";
             this.txt_ICPersoDate.TrailingIcon = null;
             // 
-            // txt_osRelease
+            // txt_osRelease_date
             // 
-            this.txt_osRelease.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txt_osRelease.AnimateReadOnly = false;
-            this.txt_osRelease.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txt_osRelease.Depth = 0;
-            this.txt_osRelease.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txt_osRelease.Hint = "OS Release";
-            this.txt_osRelease.LeadingIcon = null;
-            this.txt_osRelease.Location = new System.Drawing.Point(312, 81);
-            this.txt_osRelease.Margin = new System.Windows.Forms.Padding(4);
-            this.txt_osRelease.MaxLength = 50;
-            this.txt_osRelease.MouseState = MaterialSkin.MouseState.OUT;
-            this.txt_osRelease.Multiline = false;
-            this.txt_osRelease.Name = "txt_osRelease";
-            this.txt_osRelease.Size = new System.Drawing.Size(346, 50);
-            this.txt_osRelease.TabIndex = 23;
-            this.txt_osRelease.Text = "";
-            this.txt_osRelease.TrailingIcon = null;
+            this.txt_osRelease_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_osRelease_date.AnimateReadOnly = false;
+            this.txt_osRelease_date.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txt_osRelease_date.Depth = 0;
+            this.txt_osRelease_date.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txt_osRelease_date.Hint = "OS Release date";
+            this.txt_osRelease_date.LeadingIcon = null;
+            this.txt_osRelease_date.Location = new System.Drawing.Point(207, 81);
+            this.txt_osRelease_date.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_osRelease_date.MaxLength = 50;
+            this.txt_osRelease_date.MouseState = MaterialSkin.MouseState.OUT;
+            this.txt_osRelease_date.Multiline = false;
+            this.txt_osRelease_date.Name = "txt_osRelease_date";
+            this.txt_osRelease_date.Size = new System.Drawing.Size(346, 50);
+            this.txt_osRelease_date.TabIndex = 23;
+            this.txt_osRelease_date.Text = "";
+            this.txt_osRelease_date.TrailingIcon = null;
             // 
             // txt_ICPersonalizer
             // 
@@ -1002,7 +986,7 @@ namespace Smart_card_utility
             this.txt_ICPersonalizer.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_ICPersonalizer.Hint = "IC Personalizer";
             this.txt_ICPersonalizer.LeadingIcon = null;
-            this.txt_ICPersonalizer.Location = new System.Drawing.Point(312, 467);
+            this.txt_ICPersonalizer.Location = new System.Drawing.Point(207, 467);
             this.txt_ICPersonalizer.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ICPersonalizer.MaxLength = 50;
             this.txt_ICPersonalizer.MouseState = MaterialSkin.MouseState.OUT;
@@ -1013,26 +997,26 @@ namespace Smart_card_utility
             this.txt_ICPersonalizer.Text = "";
             this.txt_ICPersonalizer.TrailingIcon = null;
             // 
-            // txt_osRelease2
+            // txt_osRelease_level
             // 
-            this.txt_osRelease2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txt_osRelease_level.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txt_osRelease2.AnimateReadOnly = false;
-            this.txt_osRelease2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txt_osRelease2.Depth = 0;
-            this.txt_osRelease2.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txt_osRelease2.Hint = "OS Release";
-            this.txt_osRelease2.LeadingIcon = null;
-            this.txt_osRelease2.Location = new System.Drawing.Point(13, 145);
-            this.txt_osRelease2.Margin = new System.Windows.Forms.Padding(4);
-            this.txt_osRelease2.MaxLength = 50;
-            this.txt_osRelease2.MouseState = MaterialSkin.MouseState.OUT;
-            this.txt_osRelease2.Multiline = false;
-            this.txt_osRelease2.Name = "txt_osRelease2";
-            this.txt_osRelease2.Size = new System.Drawing.Size(283, 50);
-            this.txt_osRelease2.TabIndex = 24;
-            this.txt_osRelease2.Text = "";
-            this.txt_osRelease2.TrailingIcon = null;
+            this.txt_osRelease_level.AnimateReadOnly = false;
+            this.txt_osRelease_level.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txt_osRelease_level.Depth = 0;
+            this.txt_osRelease_level.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txt_osRelease_level.Hint = "OS Release level";
+            this.txt_osRelease_level.LeadingIcon = null;
+            this.txt_osRelease_level.Location = new System.Drawing.Point(13, 145);
+            this.txt_osRelease_level.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_osRelease_level.MaxLength = 50;
+            this.txt_osRelease_level.MouseState = MaterialSkin.MouseState.OUT;
+            this.txt_osRelease_level.Multiline = false;
+            this.txt_osRelease_level.Name = "txt_osRelease_level";
+            this.txt_osRelease_level.Size = new System.Drawing.Size(178, 50);
+            this.txt_osRelease_level.TabIndex = 24;
+            this.txt_osRelease_level.Text = "";
+            this.txt_osRelease_level.TrailingIcon = null;
             // 
             // txt_PrePersoEqp
             // 
@@ -1050,7 +1034,7 @@ namespace Smart_card_utility
             this.txt_PrePersoEqp.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_PrePersoEqp.Multiline = false;
             this.txt_PrePersoEqp.Name = "txt_PrePersoEqp";
-            this.txt_PrePersoEqp.Size = new System.Drawing.Size(283, 50);
+            this.txt_PrePersoEqp.Size = new System.Drawing.Size(178, 50);
             this.txt_PrePersoEqp.TabIndex = 32;
             this.txt_PrePersoEqp.Text = "";
             this.txt_PrePersoEqp.TrailingIcon = null;
@@ -1064,7 +1048,7 @@ namespace Smart_card_utility
             this.txt_IC_batchIdentifier.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_IC_batchIdentifier.Hint = "IC Batch Identifier";
             this.txt_IC_batchIdentifier.LeadingIcon = null;
-            this.txt_IC_batchIdentifier.Location = new System.Drawing.Point(313, 209);
+            this.txt_IC_batchIdentifier.Location = new System.Drawing.Point(208, 209);
             this.txt_IC_batchIdentifier.Margin = new System.Windows.Forms.Padding(4);
             this.txt_IC_batchIdentifier.MaxLength = 50;
             this.txt_IC_batchIdentifier.MouseState = MaterialSkin.MouseState.OUT;
@@ -1084,7 +1068,7 @@ namespace Smart_card_utility
             this.txt_PrePersoDate.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_PrePersoDate.Hint = "IC Pre-Perso Date";
             this.txt_PrePersoDate.LeadingIcon = null;
-            this.txt_PrePersoDate.Location = new System.Drawing.Point(312, 403);
+            this.txt_PrePersoDate.Location = new System.Drawing.Point(207, 403);
             this.txt_PrePersoDate.Margin = new System.Windows.Forms.Padding(4);
             this.txt_PrePersoDate.MaxLength = 50;
             this.txt_PrePersoDate.MouseState = MaterialSkin.MouseState.OUT;
@@ -1111,7 +1095,7 @@ namespace Smart_card_utility
             this.txt_icSerailnumber.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_icSerailnumber.Multiline = false;
             this.txt_icSerailnumber.Name = "txt_icSerailnumber";
-            this.txt_icSerailnumber.Size = new System.Drawing.Size(283, 50);
+            this.txt_icSerailnumber.Size = new System.Drawing.Size(178, 50);
             this.txt_icSerailnumber.TabIndex = 26;
             this.txt_icSerailnumber.Text = "";
             this.txt_icSerailnumber.TrailingIcon = null;
@@ -1132,7 +1116,7 @@ namespace Smart_card_utility
             this.txt_ICPrePersonalizer.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_ICPrePersonalizer.Multiline = false;
             this.txt_ICPrePersonalizer.Name = "txt_ICPrePersonalizer";
-            this.txt_ICPrePersonalizer.Size = new System.Drawing.Size(283, 50);
+            this.txt_ICPrePersonalizer.Size = new System.Drawing.Size(178, 50);
             this.txt_ICPrePersonalizer.TabIndex = 30;
             this.txt_ICPrePersonalizer.Text = "";
             this.txt_ICPrePersonalizer.TrailingIcon = null;
@@ -1153,7 +1137,7 @@ namespace Smart_card_utility
             this.txt_osIdentifier.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_osIdentifier.Multiline = false;
             this.txt_osIdentifier.Name = "txt_osIdentifier";
-            this.txt_osIdentifier.Size = new System.Drawing.Size(283, 50);
+            this.txt_osIdentifier.Size = new System.Drawing.Size(178, 50);
             this.txt_osIdentifier.TabIndex = 22;
             this.txt_osIdentifier.Text = "";
             this.txt_osIdentifier.TrailingIcon = null;
@@ -1167,7 +1151,7 @@ namespace Smart_card_utility
             this.txt_ICMPDate.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_ICMPDate.Hint = "IC MP Date";
             this.txt_ICMPDate.LeadingIcon = null;
-            this.txt_ICMPDate.Location = new System.Drawing.Point(313, 273);
+            this.txt_ICMPDate.Location = new System.Drawing.Point(208, 273);
             this.txt_ICMPDate.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ICMPDate.MaxLength = 50;
             this.txt_ICMPDate.MouseState = MaterialSkin.MouseState.OUT;
@@ -1187,7 +1171,7 @@ namespace Smart_card_utility
             this.txt_ICFabricatorDate.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_ICFabricatorDate.Hint = "IC Fabricator Date";
             this.txt_ICFabricatorDate.LeadingIcon = null;
-            this.txt_ICFabricatorDate.Location = new System.Drawing.Point(312, 145);
+            this.txt_ICFabricatorDate.Location = new System.Drawing.Point(207, 145);
             this.txt_ICFabricatorDate.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ICFabricatorDate.MaxLength = 50;
             this.txt_ICFabricatorDate.MouseState = MaterialSkin.MouseState.OUT;
@@ -1207,7 +1191,7 @@ namespace Smart_card_utility
             this.txt_ICEmbeddingDate.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_ICEmbeddingDate.Hint = "IC Embedding Date";
             this.txt_ICEmbeddingDate.LeadingIcon = null;
-            this.txt_ICEmbeddingDate.Location = new System.Drawing.Point(312, 337);
+            this.txt_ICEmbeddingDate.Location = new System.Drawing.Point(207, 337);
             this.txt_ICEmbeddingDate.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ICEmbeddingDate.MaxLength = 50;
             this.txt_ICEmbeddingDate.MouseState = MaterialSkin.MouseState.OUT;
@@ -1227,7 +1211,7 @@ namespace Smart_card_utility
             this.txt_ICType.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_ICType.Hint = "IC Type";
             this.txt_ICType.LeadingIcon = null;
-            this.txt_ICType.Location = new System.Drawing.Point(312, 16);
+            this.txt_ICType.Location = new System.Drawing.Point(207, 16);
             this.txt_ICType.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ICType.MaxLength = 50;
             this.txt_ICType.MouseState = MaterialSkin.MouseState.OUT;
@@ -1238,26 +1222,26 @@ namespace Smart_card_utility
             this.txt_ICType.Text = "";
             this.txt_ICType.TrailingIcon = null;
             // 
-            // txt_ICManufacturer
+            // txt_ICCManufacturer
             // 
-            this.txt_ICManufacturer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txt_ICCManufacturer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txt_ICManufacturer.AnimateReadOnly = false;
-            this.txt_ICManufacturer.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txt_ICManufacturer.Depth = 0;
-            this.txt_ICManufacturer.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txt_ICManufacturer.Hint = "IC Manufacturer";
-            this.txt_ICManufacturer.LeadingIcon = null;
-            this.txt_ICManufacturer.Location = new System.Drawing.Point(13, 337);
-            this.txt_ICManufacturer.Margin = new System.Windows.Forms.Padding(4);
-            this.txt_ICManufacturer.MaxLength = 50;
-            this.txt_ICManufacturer.MouseState = MaterialSkin.MouseState.OUT;
-            this.txt_ICManufacturer.Multiline = false;
-            this.txt_ICManufacturer.Name = "txt_ICManufacturer";
-            this.txt_ICManufacturer.Size = new System.Drawing.Size(283, 50);
-            this.txt_ICManufacturer.TabIndex = 28;
-            this.txt_ICManufacturer.Text = "";
-            this.txt_ICManufacturer.TrailingIcon = null;
+            this.txt_ICCManufacturer.AnimateReadOnly = false;
+            this.txt_ICCManufacturer.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txt_ICCManufacturer.Depth = 0;
+            this.txt_ICCManufacturer.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txt_ICCManufacturer.Hint = "ICC Manufacturer";
+            this.txt_ICCManufacturer.LeadingIcon = null;
+            this.txt_ICCManufacturer.Location = new System.Drawing.Point(13, 337);
+            this.txt_ICCManufacturer.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_ICCManufacturer.MaxLength = 50;
+            this.txt_ICCManufacturer.MouseState = MaterialSkin.MouseState.OUT;
+            this.txt_ICCManufacturer.Multiline = false;
+            this.txt_ICCManufacturer.Name = "txt_ICCManufacturer";
+            this.txt_ICCManufacturer.Size = new System.Drawing.Size(178, 50);
+            this.txt_ICCManufacturer.TabIndex = 28;
+            this.txt_ICCManufacturer.Text = "";
+            this.txt_ICCManufacturer.TrailingIcon = null;
             // 
             // txt_ICMod
             // 
@@ -1275,7 +1259,7 @@ namespace Smart_card_utility
             this.txt_ICMod.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_ICMod.Multiline = false;
             this.txt_ICMod.Name = "txt_ICMod";
-            this.txt_ICMod.Size = new System.Drawing.Size(283, 50);
+            this.txt_ICMod.Size = new System.Drawing.Size(178, 50);
             this.txt_ICMod.TabIndex = 26;
             this.txt_ICMod.Text = "";
             this.txt_ICMod.TrailingIcon = null;
@@ -1346,7 +1330,7 @@ namespace Smart_card_utility
             this.btn_extAuth.Depth = 0;
             this.btn_extAuth.HighEmphasis = true;
             this.btn_extAuth.Icon = null;
-            this.btn_extAuth.Location = new System.Drawing.Point(654, 320);
+            this.btn_extAuth.Location = new System.Drawing.Point(654, 219);
             this.btn_extAuth.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btn_extAuth.MouseState = MaterialSkin.MouseState.HOVER;
             this.btn_extAuth.Name = "btn_extAuth";
@@ -1357,6 +1341,7 @@ namespace Smart_card_utility
             this.btn_extAuth.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btn_extAuth.UseAccentColor = false;
             this.btn_extAuth.UseVisualStyleBackColor = true;
+            this.btn_extAuth.Click += new System.EventHandler(this.btn_extAuth_Click);
             // 
             // btn_appDelete
             // 
@@ -1367,7 +1352,7 @@ namespace Smart_card_utility
             this.btn_appDelete.Enabled = false;
             this.btn_appDelete.HighEmphasis = true;
             this.btn_appDelete.Icon = null;
-            this.btn_appDelete.Location = new System.Drawing.Point(654, 261);
+            this.btn_appDelete.Location = new System.Drawing.Point(654, 153);
             this.btn_appDelete.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btn_appDelete.MouseState = MaterialSkin.MouseState.HOVER;
             this.btn_appDelete.Name = "btn_appDelete";
@@ -1378,26 +1363,7 @@ namespace Smart_card_utility
             this.btn_appDelete.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btn_appDelete.UseAccentColor = false;
             this.btn_appDelete.UseVisualStyleBackColor = true;
-            // 
-            // btn_cardImage
-            // 
-            this.btn_cardImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_cardImage.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btn_cardImage.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btn_cardImage.Depth = 0;
-            this.btn_cardImage.HighEmphasis = true;
-            this.btn_cardImage.Icon = null;
-            this.btn_cardImage.Location = new System.Drawing.Point(654, 175);
-            this.btn_cardImage.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btn_cardImage.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btn_cardImage.Name = "btn_cardImage";
-            this.btn_cardImage.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btn_cardImage.Size = new System.Drawing.Size(108, 36);
-            this.btn_cardImage.TabIndex = 5;
-            this.btn_cardImage.Text = "Card Image";
-            this.btn_cardImage.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btn_cardImage.UseAccentColor = false;
-            this.btn_cardImage.UseVisualStyleBackColor = true;
+            this.btn_appDelete.Click += new System.EventHandler(this.btn_appDelete_Click);
             // 
             // btn_cardInfo
             // 
@@ -1407,7 +1373,7 @@ namespace Smart_card_utility
             this.btn_cardInfo.Depth = 0;
             this.btn_cardInfo.HighEmphasis = true;
             this.btn_cardInfo.Icon = null;
-            this.btn_cardInfo.Location = new System.Drawing.Point(654, 103);
+            this.btn_cardInfo.Location = new System.Drawing.Point(654, 81);
             this.btn_cardInfo.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btn_cardInfo.MouseState = MaterialSkin.MouseState.HOVER;
             this.btn_cardInfo.Name = "btn_cardInfo";
@@ -1652,6 +1618,7 @@ namespace Smart_card_utility
             this.btn_readerRefresh.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btn_readerRefresh.UseAccentColor = false;
             this.btn_readerRefresh.UseVisualStyleBackColor = true;
+            this.btn_readerRefresh.Click += new System.EventHandler(this.btn_readerRefresh_Click);
             // 
             // cbb_cardReader2
             // 
@@ -2175,6 +2142,7 @@ namespace Smart_card_utility
             this.btn_refresh2.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btn_refresh2.UseAccentColor = false;
             this.btn_refresh2.UseVisualStyleBackColor = true;
+            this.btn_refresh2.Click += new System.EventHandler(this.btn_refresh2_Click);
             // 
             // cbb_cardReader3
             // 
@@ -3322,7 +3290,6 @@ namespace Smart_card_utility
         private TabPage tabPage5;
         private TabPage tabPage6;
         private ToolStripMenuItem toolStripMenuItem1;
-        private MaterialSkin.Controls.MaterialToolStripMenuItem materialToolStripMenuItem1;
         private TabPage tabPage7;
         private GroupBox groupBox1;
         private MaterialSkin.Controls.MaterialButton btn_powerOff;
@@ -3352,14 +3319,13 @@ namespace Smart_card_utility
         private MaterialSkin.Controls.MaterialTextBox txt_kmcKCV3;
         private MaterialSkin.Controls.MaterialTextBox txt_kmcKCV2;
         private MaterialSkin.Controls.MaterialButton btn_appDelete;
-        private MaterialSkin.Controls.MaterialButton btn_cardImage;
         private MaterialSkin.Controls.MaterialButton btn_cardInfo;
         private GroupBox groupBox5;
         private MaterialSkin.Controls.MaterialComboBox cbb_cardManager;
         private MaterialSkin.Controls.MaterialButton btn_extAuth;
         private MaterialSkin.Controls.MaterialTextBox txt_AID;
         private MaterialSkin.Controls.MaterialTextBox txt_ATR;
-        private MaterialSkin.Controls.MaterialTextBox txt_osRelease;
+        private MaterialSkin.Controls.MaterialTextBox txt_osRelease_date;
         private MaterialSkin.Controls.MaterialTextBox txt_osIdentifier;
         private MaterialSkin.Controls.MaterialTextBox txt_ICType;
         private MaterialSkin.Controls.MaterialTextBox txt_ICFabricator;
@@ -3368,10 +3334,10 @@ namespace Smart_card_utility
         private MaterialSkin.Controls.MaterialTextBox txt_IC_batchIdentifier;
         private MaterialSkin.Controls.MaterialTextBox txt_icSerailnumber;
         private MaterialSkin.Controls.MaterialTextBox txt_ICFabricatorDate;
-        private MaterialSkin.Controls.MaterialTextBox txt_osRelease2;
+        private MaterialSkin.Controls.MaterialTextBox txt_osRelease_level;
         private Panel panel1;
         private MaterialSkin.Controls.MaterialTextBox txt_ICEmbeddingDate;
-        private MaterialSkin.Controls.MaterialTextBox txt_ICManufacturer;
+        private MaterialSkin.Controls.MaterialTextBox txt_ICCManufacturer;
         private MaterialSkin.Controls.MaterialTextBox txt_ICPersoEquipID;
         private MaterialSkin.Controls.MaterialTextBox txt_ICPersoDate;
         private MaterialSkin.Controls.MaterialTextBox txt_ICPersonalizer;
@@ -3463,7 +3429,7 @@ namespace Smart_card_utility
         private ImageList menuIconList;
         private MaterialSkin.Controls.MaterialComboBox cbb_aesEncMode;
         private MaterialSkin.Controls.MaterialComboBox cbb_desMode;
-        private MaterialSkin.Controls.MaterialMultiLineTextBox txt_cardInfo;
+        private TreeView tv_card;
     }
 }
 
