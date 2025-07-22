@@ -184,8 +184,6 @@ namespace SmartCard
                 {
                     break;
                 }
-
-
             }
             return apps;
         }
@@ -264,7 +262,6 @@ namespace SmartCard
                     MessageBox.Show($"CPLC Error: {status}");
                     break; 
                 }
-
                 cplc.Add(new CPLC
                 {
                     IC_Fabricator = ic_fabricator,
@@ -289,7 +286,6 @@ namespace SmartCard
                 });
 
             }
-
 
             return cplc;
         }
