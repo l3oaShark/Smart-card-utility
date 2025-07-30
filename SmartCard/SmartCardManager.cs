@@ -205,19 +205,6 @@ namespace SmartCard
                 return false;
             }
         }
-
-
-        private static byte[] ExpandDoubleLengthKeyToTriple(byte[] key16)
-        {
-            // SCP02 uses 2-key 3DES: K1 || K2 || K1
-            if (key16.Length != 16) throw new ArgumentException("Key must be 16 bytes (double-length)");
-            byte[] key24 = new byte[24];
-            Buffer.BlockCopy(key16, 0, key24, 0, 16);
-            Buffer.BlockCopy(key16, 0, key24, 16, 8); // K1 again
-            return key24;
-        }
-
-
         
     }
 

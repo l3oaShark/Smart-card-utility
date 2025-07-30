@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using static Encryptions.Utils;
 using static SmartCard.Authenticate;
 using static SmartCard.TlvParser;
 
@@ -17,24 +16,6 @@ namespace SmartCard
         {
             _manager = manager;
         }
-
-        //public Dictionary<string, string> GetCardInfo()
-        //{
-        //    var apdu = ApduHelper.GetChallenge();
-        //    var response = _manager.Transmit(apdu);
-
-        //    var info = new Dictionary<string, string>();
-        //    if (response != null && response.Length >= 2 && response[response.Length-2] == 0x90 && response[response.Length-1] == 0x00)
-        //    {
-        //        info["Challenge"] = BitConverter.ToString(response.Take(response.Length - 2).ToArray());
-        //    }
-        //    else
-        //    {
-        //        info["Error"] = "Failed to get challenge.";
-        //    }
-
-        //    return info;
-        //}
 
         /// <summary>
         /// อ่านข้อมูล card info แบบรวมในรูปแบบ TLV (ส่ง APDU command ที่ card กำหนด)
@@ -238,31 +219,6 @@ namespace SmartCard
                 return result;
             }
             result.Add(mode == Mode_ActionKey.CreateKey ? "Crate key" : "Update key"+ $" : {putkeyHex}");
-
-            ////wise card logic
-            //// ค่า Key ที่ต้องการอัปเดต (ENC, MAC, DEK) แบบเข้ารหัสด้วย SessionKey DEK
-            //string encKeyEncrypted = KEnc2;
-            //string macKeyEncrypted = KMac2;
-            //string dekKeyEncrypted = KDek2;
-
-            //string keySetVersion = "00"; // หรือ "00" แล้วแต่การ์ด
-            //string dgi8f01Data = keySetVersion + PutKeySetDat;//+ encKeyEncrypted + macKeyEncrypted + dekKeyEncrypted;
-            //string dgi8f01Length = (dgi8f01Data.Length / 2).ToString("X2"); // ความยาวเป็น byte
-
-            //string dgi8f01 = "8F01" + dgi8f01Length + dgi8f01Data;
-
-            //// ถ้ามี 7F01 (เช่นใส่ KCV หรือ metadata อื่น)
-            //string dgi7f01 = ""; // หากไม่ต้องการ ใส่ "" หรือ null
-
-            //// รวมเป็น payload
-            //string fullPayload = dgi8f01 + dgi7f01;
-            //string lc = (fullPayload.Length / 2).ToString("X2");
-
-            //string apduHex = "80E20000" + lc + fullPayload;
-            //byte[] apduBytes = Utils.HexStringToBytes(apduHex);
-
-            //byte[] updateSTOREDATA = ApduHelper.TransmitApduCommand(readerName, apduBytes);
-            //string updateHex = BitConverter.ToString(updateSTOREDATA).Replace("-", " ");
 
             return result;
         }

@@ -99,7 +99,5 @@ namespace SmartCard
             //string sid = BitConverter.ToString(response_ISD).Replace("-", "");
             //sid = sid.Substring(2, Convert.ToInt32(sid.Substring(0, 2)) * 2);
 
-
-
     }
 }
