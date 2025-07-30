@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -181,7 +182,14 @@ namespace SmartCard
         {
             try
             {
-                string isd = Authenticate.Auto_Authenticate(readerName, key);
+                string statusAuth = Authenticate.Auto_Authenticate(readerName, key);
+                if (statusAuth != "9000")
+                {
+                    MessageBox.Show("Authentication failed", "Delete Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+
                 string apps = "4F"+app[0].length + app[0].app;
                 int appsByteLength = Utils.HexStringToBytes(apps).Length;
                 string apdu_delete = "80 E4 00 00 "+ appsByteLength.ToString("X2") + apps;
@@ -199,27 +207,18 @@ namespace SmartCard
         }
 
 
-        //public SmartCardManager()
-        //{
-        //    var result = Readers.SCardEstablishContext(0, IntPtr.Zero, IntPtr.Zero, out _context);
-        //    if (result != 0) throw new Exception("Failed to establish context.");
-        //}
+        private static byte[] ExpandDoubleLengthKeyToTriple(byte[] key16)
+        {
+            // SCP02 uses 2-key 3DES: K1 || K2 || K1
+            if (key16.Length != 16) throw new ArgumentException("Key must be 16 bytes (double-length)");
+            byte[] key24 = new byte[24];
+            Buffer.BlockCopy(key16, 0, key24, 0, 16);
+            Buffer.BlockCopy(key16, 0, key24, 16, 8); // K1 again
+            return key24;
+        }
 
-        //public void Connect(string readerName)
-        //{
-        //    Readers.SCardConnect(_context, readerName, 2, 3, out _card, out _protocol);
-        //}
 
-        //public byte[] Transmit(byte[] apdu)
-        //{
-        //    return Readers.TransmitApdu(_card, _protocol, apdu);
-        //}
-
-        //public void Dispose()
-        //{
-        //    if (_card != IntPtr.Zero) Readers.SCardDisconnect(_card, 0);
-        //    if (_context != IntPtr.Zero) Readers.SCardReleaseContext(_context);
-        //}
+        
     }
 
 }

@@ -1,6 +1,7 @@
 ﻿using Encryptions;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using PCSC;
 using Public_key_certification_processing;
 using SmartCard;
 using System;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using static SmartCard.Authenticate;
 using static SmartCard.TlvParser;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
@@ -19,6 +21,7 @@ namespace Smart_card_utility
 {
     public partial class Main : MaterialForm
     {
+       
         private readonly MaterialSkinManager materialSkinManager;
         public string filepki;
         public string fileINP;
@@ -51,6 +54,7 @@ namespace Smart_card_utility
         public Main()
         {
             InitializeComponent();
+            this.Icon = new Icon("icon.ico");
             hContext = smart_card.EstablishContext();
             LoadReadersToComboBox();
             materialSkinManager = MaterialSkinManager.Instance;
@@ -95,6 +99,8 @@ namespace Smart_card_utility
                 cryptoMode = Utils.CryptoMode.CBC;
 
             }
+
+            cbb_mode_actionkey.DataSource = Enum.GetValues(typeof(Mode_ActionKey));
             cbb_kmcValue1.Visible = true;
             txt_kmcKCV1.Visible = true;
 
@@ -180,6 +186,8 @@ namespace Smart_card_utility
             }
             rdo_old_derive_kmc.Checked = true;
             rdo_new_derive_kmc.Checked = true;
+            cbb_new_type.Visible = true;
+            cbb_old_type.Visible = true;
         }
 
         private void verify_Click(object sender, EventArgs e)
@@ -1116,66 +1124,57 @@ namespace Smart_card_utility
 
         private void btn_updateCardmanager_Click(object sender, EventArgs e)
         {
+            txt_processMessage.Clear();
+
+            List<string> result = new List<string>();
+            result.Add("PC/SC Smart Card Reader Name: " + cbb_cardReader3.SelectedItem.ToString());
             if (cbb_cardReader3.SelectedItem != null)
             {
                 hCard = SmartCardManager.PowerOnCard(hContext, cbb_cardReader3.SelectedItem.ToString(), out _);
+                result.Add("Card Reader is powered on successfully.");
             }
             string key = string.Empty;
             if (rdo_old_derive_kmc.Checked)
             {
                 key = cbb_old_kmc_key.SelectedItem?.ToString() ?? string.Empty;
             }
+            Mode_ActionKey selectedMode = (Mode_ActionKey)cbb_mode_actionkey.SelectedItem;
 
-            string ext_Auth = Authenticate.Auto_Authenticate(cbb_cardReader3.SelectedItem.ToString(), key);
+            var a = SmartCardInfo.UpdateCMKey_TripleKeySCP02(cbb_cardReader3.SelectedItem.ToString(), selectedMode, cbb_cardmanager2.SelectedItem.ToString(), txt_old_kmc_key.Text, txt_new_kmc_key.Text, txt_new_kmc_key.Text, txt_new_kmc_key.Text);
 
-            //byte[] atr = SmartCardInfo.GetATR(cbb_cardReader3.Text);
-            //string hexatr = BitConverter.ToString(atr).Replace("-", " ");
-            //txt_ATR.Text = hexatr;
+            result.Add(string.Join(Environment.NewLine, a));
 
-            //byte[] apdu = Utils.HexStringToBytes("00 A4 04 00 09 A0 00 00 01 67 41 30 00 FF");
-            //byte[] apdu2 = Utils.HexStringToBytes("00 A4 04 00 08 A0 00 00 01 51 00 00 00");
-            //byte[] apdu3 = Utils.HexStringToBytes("80 50 00 00 08 00 00 00 00 00 00 00 00");
-
-            //byte[] response = ApduHelper.TransmitApduCommand(cbb_cardReader3.Text, apdu);
-            //byte[] dataOnly = response.Take(response.Length - 2).ToArray();
-            //string hex = BitConverter.ToString(response).Replace("-", " ");
-
-            //byte[] response2 = ApduHelper.TransmitApduCommand(cbb_cardReader3.Text, apdu2);
-            //string hex2 = BitConverter.ToString(response2).Replace("-", " ");
-
-            //byte[] response3 = ApduHelper.TransmitApduCommand(cbb_cardReader3.Text, apdu3);
-            //string hex3 = BitConverter.ToString(response3).Replace("-", " ");
-
-            //string host_challenge = "0000000000000000";
-            //string data_auth = Authenticate.Exthernal_Authenticate(hex3, cbb_kmcValue1.Text, "", host_challenge, Authenticate.Mode_Derivation.CPG211);
-
-            //byte[] responseAuth = ApduHelper.TransmitApduCommand(cbb_cardReader3.Text, Utils.HexStringToBytes(data_auth));
+            txt_processMessage.Text = string.Join(Environment.NewLine, result);
+            SmartCardManager.PowerOffCard(hCard);
 
 
         }
 
         private void rdo_old_derive_kmc_CheckedChanged(object sender, EventArgs e)
         {
-            cbb_old_kmc_key.Visible = true;
-            txt_old_kmc_kcv1.Visible = true;
+            //cbb_old_kmc_key.Visible = true;
+            //txt_old_kmc_kcv1.Visible = true;
 
-            cbb_old_kmc_fixed.Visible = false;
-            txt_old_kmc_kcv2.Visible = false;
+            //cbb_old_kmc_fixed.Visible = false;
+            //txt_old_kmc_kcv2.Visible = false;
 
-            cbb_old_no_kmc.Visible = false;
-            txt_old_kmc_kcv3.Visible = false;
+            //cbb_old_no_kmc.Visible = false;
+            //txt_old_kmc_kcv3.Visible = false;
+            cbb_old_type.Visible = true;
         }
 
         private void rdo_old_kmc_fixed_CheckedChanged(object sender, EventArgs e)
         {
-            cbb_old_kmc_key.Visible = true;
-            txt_old_kmc_kcv1.Visible = true;
+            //cbb_old_kmc_key.Visible = true;
+            //txt_old_kmc_kcv1.Visible = true;
 
-            cbb_old_kmc_fixed.Visible = true;
-            txt_old_kmc_kcv2.Visible = true;
+            //cbb_old_kmc_fixed.Visible = true;
+            //txt_old_kmc_kcv2.Visible = true;
 
-            cbb_old_no_kmc.Visible = true;
-            txt_old_kmc_kcv3.Visible = true;
+            //cbb_old_no_kmc.Visible = true;
+            //txt_old_kmc_kcv3.Visible = true;
+            cbb_old_type.Visible = false;
+
         }
 
         private void rdo_old_no_kmc_CheckedChanged(object sender, EventArgs e)
@@ -1192,27 +1191,82 @@ namespace Smart_card_utility
 
         private void rdo_new_derive_kmc_CheckedChanged(object sender, EventArgs e)
         {
-            cbb_new_kmc_key.Visible = true;
-            txt_new_kmc_kcv1.Visible = true;
+            //cbb_new_kmc_key.Visible = true;
+            //txt_new_kmc_kcv1.Visible = true;
 
-            cbb_new_kmc_fixed.Visible = false;
-            txt_new_kmc_kcv2.Visible = false;
+            //cbb_new_kmc_fixed.Visible = false;
+            //txt_new_kmc_kcv2.Visible = false;
 
-            cbb_new_no_kmc.Visible = false;
-            txt_new_kmc_kcv3.Visible = false;
+            //cbb_new_no_kmc.Visible = false;
+            //txt_new_kmc_kcv3.Visible = false;
+            cbb_new_type.Visible = true;
+
         }
 
         private void rdo_new_kmc_fixed_CheckedChanged(object sender, EventArgs e)
         {
-            cbb_new_kmc_key.Visible = true;
-            txt_new_kmc_kcv1.Visible = true;
+            cbb_new_type.Visible = false;
 
-            cbb_new_kmc_fixed.Visible = true;
-            txt_new_kmc_kcv2.Visible = true;
+            //cbb_new_kmc_key.Visible = true;
+            //txt_new_kmc_kcv1.Visible = true;
 
-            cbb_new_no_kmc.Visible = true;
-            txt_new_kmc_kcv3.Visible = true;
+            //cbb_new_kmc_fixed.Visible = true;
+            //txt_new_kmc_kcv2.Visible = true;
+
+            //cbb_new_no_kmc.Visible = true;
+            //txt_new_kmc_kcv3.Visible = true;
         }
-    }
 
+        private void txt_old_kmc_key_Enter(object sender, EventArgs e)
+        {
+            try
+            {
+                txt_old_kmc_kcv1.Text = DesHelper.GetKCV(txt_old_kmc_key.Text.Trim());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txt_old_kmc_kcv1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                txt_old_kmc_kcv1.Text = DesHelper.GetKCV(txt_old_kmc_key.Text.Trim());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txt_new_kmc_key_Enter(object sender, EventArgs e)
+        {
+            try
+            {
+                txt_new_kmc_kcv1.Text = DesHelper.GetKCV(txt_new_kmc_key.Text.Trim());
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+        private void txt_new_kmc_kcv1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                txt_new_kmc_kcv1.Text = DesHelper.GetKCV(txt_new_kmc_key.Text.Trim());
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+    }
 }

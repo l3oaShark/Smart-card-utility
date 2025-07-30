@@ -16,6 +16,11 @@ namespace SmartCard
             None,
             CPG211
         }
+        public enum Mode_ActionKey
+        {
+            CreateKey,
+            UpdateKey
+        }
 
         public static string Exthernal_Authenticate(string dataHex, string kmc, string iv, string host_challenge, Mode_Derivation mode)
         {
@@ -86,14 +91,15 @@ namespace SmartCard
             string host_challenge = "0000000000000000";
             string data_auth = Authenticate.Exthernal_Authenticate(hex3, key, "", host_challenge, Authenticate.Mode_Derivation.CPG211);
             byte[] responseAuth = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes(data_auth));
-
-            byte[] response_ISD = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("80 F2 80 00 02 4F 00"));
-            string sid = BitConverter.ToString(response_ISD).Replace("-", "");
-            sid = sid.Substring(2, Convert.ToInt32(sid.Substring(0, 2)) * 2);
-
-
-            return sid;
+            string authHex = BitConverter.ToString(responseAuth).Replace("-", " ");
+            return authHex;
         }
+
+            //byte[] response_ISD = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("80 F2 80 00 02 4F 00"));
+            //string sid = BitConverter.ToString(response_ISD).Replace("-", "");
+            //sid = sid.Substring(2, Convert.ToInt32(sid.Substring(0, 2)) * 2);
+
+
 
     }
 }

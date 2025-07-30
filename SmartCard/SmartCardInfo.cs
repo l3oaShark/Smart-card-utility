@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Encryptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Encryptions;
+using System.Security.Cryptography;
+using static Encryptions.Utils;
+using static SmartCard.Authenticate;
 using static SmartCard.TlvParser;
 
 namespace SmartCard
@@ -36,26 +39,8 @@ namespace SmartCard
         /// <summary>
         /// อ่านข้อมูล card info แบบรวมในรูปแบบ TLV (ส่ง APDU command ที่ card กำหนด)
         /// </summary>
-        public static List<TLV> GetCardInfoTLV(string readerName)
-        {
-            // ตัวอย่าง APDU สมมติ: อ่านข้อมูล card info ที่ tag ต่าง ๆ รวมใน TLV structure
-            // ต้องเปลี่ยน APDU นี้ให้ตรงกับ card จริง เช่น INS=0xCA (GET DATA), P1, P2 ตาม tag หรือตาม protocol
 
-            byte[] apduCommand = new byte[] { 0x00, 0xCA, 0x01, 0x00, 0x00 }; // ตัวอย่าง APDU GET DATA
-
-            var response = ApduHelper.TransmitApduCommand(readerName, apduCommand);
-
-            if (response == null || response.Length < 2) return null;
-
-            // ตัด SW1 SW2 ออก
-            byte[] data = new byte[response.Length - 2];
-            Array.Copy(response, 0, data, 0, data.Length);
-
-            var tlvs = ParseTlv(data);
-            return tlvs;
-        }
-
-        public static (List<CardInfo> cardInfos,List<CPLC>cplc,List<Applications>apps ,string aid, string atr) ReadCardInfo(string readerName, string key, byte[] kcv)
+        public static (List<CardInfo> cardInfos, List<CPLC> cplc, List<Applications> apps, string aid, string atr) ReadCardInfo(string readerName, string key, byte[] kcv)
         {
             byte[] atr = GetATR(readerName);
             string hexatr = BitConverter.ToString(atr).Replace("-", " ");
@@ -84,9 +69,16 @@ namespace SmartCard
             //byte[] response_ISD = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("80 F2 80 00 02 4F 00"));
             //string isd = BitConverter.ToString(response_ISD).Replace("-", "");
 
-            string isd = Authenticate.Auto_Authenticate(readerName, key);
+            string statusAuth = Authenticate.Auto_Authenticate(readerName, key);
+            if (statusAuth != "9000")
+            {
+                throw new Exception("Authentication failed");
+            }
+            byte[] response_ISD = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("80 F2 80 00 02 4F 00"));
+            string isd = BitConverter.ToString(response_ISD).Replace("-", "");
+            isd = isd.Substring(2, Convert.ToInt32(isd.Substring(0, 2)) * 2);
 
-                                                                                                              
+
             byte[] response_Applications = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("80 F2 40 00 02 4F 00"));
             string application = BitConverter.ToString(response_Applications).Replace("-", " ");
             var apps = ParseApplications(application);
@@ -141,6 +133,149 @@ namespace SmartCard
 
         }
 
+        public static List<string> UpdateCMKey_TripleKeySCP02(string readerName, Mode_ActionKey mode, string isd, string oldCMK, string newKEnc, string newKMac, string newKDEK)
+        {
+            string action = mode == Mode_ActionKey.CreateKey ? "00" : "01";
+            List<string> result = new List<string>();
+
+            byte[] atr = SmartCardInfo.GetATR(readerName);
+            result.Add("ATR: " + BitConverter.ToString(atr).Replace("-", " "));
+            result.Add("Card Manager: " + isd);
+
+            // 1. SELECT ISD
+            string ISD = BitConverter.ToString( ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("00 A4 04 00 08 " + isd))).Replace("-", "").Replace(" ", "");
+
+            // 2. Host Challenge (สุ่ม 8 byte)
+            string hostChallenge = GenerateHostChallenge();
+            var response = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("80 50 00 00 08 " + hostChallenge));
+            string res = BitConverter.ToString(response).Replace("-", "").Replace(" ", "");
+            if (response.Length < 30 ||
+                response[response.Length - 2] != 0x90 ||
+                response[response.Length - 1] != 0x00)
+            {
+                result.Add("❌ INITIALIZE UPDATE failed");
+                return result;
+            }
+            result.Add($"INITIALIZE : {res}");
+
+            //res = "00001239036635201623030200299F562F8233689EB55D9386B34FFC";// for testing
+            //----- Defind variable
+            string Last2BAID = res.Substring(0, 2*2); // C0:2 = Last 2 byte AID 
+            string CSN = res.Substring((5-1)*2, 4*2);         // C5:4 = CSN 
+            string ICBatchIdentifier = res.Substring((9-1)*2, 2*2); // C9:2 = IC Batch Identifier 
+            string Counter = res.Substring((13-1)*2, 2*2); // C13:2 = Counter  
+            string CardChallenge = res.Substring((15-1)*2, 6*2); // C15:6 = Card Challenge 
+            string CardCrypogramExp = res.Substring((21-1)*2, 8*2); // C21:8 = Card Cryptogram 
+
+            string KEnc = DesHelper.Encrypt(oldCMK, CSN + ICBatchIdentifier + "F001" + CSN + ICBatchIdentifier + "0F01", Utils.CryptoMode.ECB, null);
+            string KMac = DesHelper.Encrypt(oldCMK, CSN + ICBatchIdentifier + "F002" + CSN + ICBatchIdentifier + "0F02", Utils.CryptoMode.ECB, null);
+            string KDek = DesHelper.Encrypt(oldCMK, CSN + ICBatchIdentifier + "F003" + CSN + ICBatchIdentifier + "0F03", Utils.CryptoMode.ECB, null);
+
+            string SkuEnc = DesHelper.Encrypt(KEnc, "0182" + Counter + "000000000000000000000000", Utils.CryptoMode.CBC, "0000000000000000"); //16 bytes
+            string SkuMac = DesHelper.Encrypt(KMac, "0101" + Counter + "000000000000000000000000", Utils.CryptoMode.CBC, "0000000000000000"); //16 bytes
+            string SkuDek = DesHelper.Encrypt(KDek, "0181" + Counter + "000000000000000000000000", Utils.CryptoMode.CBC, "0000000000000000"); //16 bytes
+
+            //----- Host cryptogram calculation 
+            string HostCrypogramTemp =DesHelper.Encrypt(SkuEnc, Counter + CardChallenge + hostChallenge + "8000000000000000", Utils.CryptoMode.CBC, "0000000000000000");
+            string HostCrypogram = HostCrypogramTemp.Substring((17-1)*2, 8*2); // C17:8 = HostCrypogram
+
+            //----- CMAC calculation
+            string output1 = DesHelper.Encrypt(SkuMac.Substring(0, 8 * 2), "8482000010" + HostCrypogram + "800000", Utils.CryptoMode.CBC, "0000000000000000");
+            string input2 = DesHelper.Decrypt(SkuMac.Substring((9-1) * 2, 8 * 2), output1.Substring((9-1)*2, 8 * 2), Utils.CryptoMode.CBC, "0000000000000000");
+            string CMAC = DesHelper.Encrypt(SkuMac.Substring(0, 8 * 2), input2, Utils.CryptoMode.CBC, "0000000000000000");
+
+            string ExtAuthDat = HostCrypogram + CMAC;
+
+
+            //----- Card cryptogram calculation
+            string CardCrypogramCal = DesHelper.Encrypt(SkuEnc, hostChallenge + Counter + CardChallenge + "8000000000000000", Utils.CryptoMode.CBC, "0000000000000000");
+
+            //**** Card cryptogram comparison ****//
+            string CardCrypogramCalR8 = CardCrypogramCal.Substring(CardCrypogramCal.Length - (8*2), 8*2);
+            if (!CardCrypogramCalR8.SequenceEqual(CardCrypogramExp))
+            {
+                result.Add($"❌ CardCryptogram mismatch!\nCalculated (R8): {(CardCrypogramCalR8).Replace("-", "")}\nExpected  (Exp): {(CardCrypogramExp).Replace("-", "")}");
+                return result;
+            }
+            //var CardCrypogramCmp = SmartCardManager.CalculateCardCryptogram(Utils.HexStringToBytes(hostChallenge), Utils.HexStringToBytes( CardChallenge), Utils.HexStringToBytes(Counter), Utils.HexStringToBytes(SkuMac));
+
+            //----- Ext-auth
+            byte[] responseAuth = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("84 82 00 00 10" + ExtAuthDat));
+            string authHex = BitConverter.ToString(responseAuth).Replace("-", " ").Replace(" ", "");
+            if (responseAuth.Length < 2 ||
+                responseAuth[responseAuth.Length - 2] != 0x90 ||
+                responseAuth[responseAuth.Length - 1] != 0x00)
+            {
+                result.Add("❌ EXTERNAL AUTHENTICATE failed");
+                return result;
+            }
+            result.Add($"EXTERNAL AUTHENTICATE : {authHex}");
+            //----- Session key creation
+            string KEnc2 = DesHelper.Encrypt(newKEnc, CSN + ICBatchIdentifier + "F001" + CSN + ICBatchIdentifier + "0F01", Utils.CryptoMode.ECB, null); // 16 bytes
+            string KMac2 = DesHelper.Encrypt(newKMac, CSN + ICBatchIdentifier + "F002" + CSN + ICBatchIdentifier + "0F02", Utils.CryptoMode.ECB, null); // 16 bytes
+            string KDek2 = DesHelper.Encrypt(newKDEK, CSN + ICBatchIdentifier + "F003" + CSN + ICBatchIdentifier + "0F03", Utils.CryptoMode.ECB, null); // 16 bytes
+
+            string KEnc2KCV = DesHelper.Encrypt(KEnc2, "0000000000000000", Utils.CryptoMode.ECB, null); //16 bytes
+            string KMac2KCV = DesHelper.Encrypt(KMac2, "0000000000000000", Utils.CryptoMode.ECB, null); //16 bytes
+            string KDek2KCV = DesHelper.Encrypt(KDek2, "0000000000000000", Utils.CryptoMode.ECB, null); //16 bytes
+
+            string CDKEnc = DesHelper.Encrypt(SkuDek, KEnc2, Utils.CryptoMode.ECB, null); // 16 bytes
+            string CDKMac = DesHelper.Encrypt(SkuDek, KMac2, Utils.CryptoMode.ECB, null); // 16 bytes
+            string CDKDek = DesHelper.Encrypt(SkuDek, KDek2, Utils.CryptoMode.ECB, null); // 16 bytes
+
+            string PutKeySetDat = "8010" + CDKEnc + "03" + KEnc2KCV.Substring(0, 3 * 2) + "8010" + CDKMac + "03" + KMac2KCV.Substring(0, 3 * 2) + "8010" + CDKDek + "03" + KDek2KCV.Substring(0, 3 * 2); //16 bytes
+
+
+            //----- Put-key set
+            byte[] putkey = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes($"80 D8 {action} 81 43 01" + PutKeySetDat)); // 66 bytes
+            string putkeyHex = BitConverter.ToString(putkey).Replace("-", "").Replace(" ", "");
+
+            if (putkey.Length < 2 ||
+                putkey[putkey.Length - 2] != 0x90 ||
+                putkey[putkey.Length - 1] != 0x00)
+            {
+                result.Add($"❌ PUT KEY failed: SW = {putkeyHex}");
+                return result;
+            }
+            result.Add(mode == Mode_ActionKey.CreateKey ? "Crate key" : "Update key"+ $" : {putkeyHex}");
+
+            ////wise card logic
+            //// ค่า Key ที่ต้องการอัปเดต (ENC, MAC, DEK) แบบเข้ารหัสด้วย SessionKey DEK
+            //string encKeyEncrypted = KEnc2;
+            //string macKeyEncrypted = KMac2;
+            //string dekKeyEncrypted = KDek2;
+
+            //string keySetVersion = "00"; // หรือ "00" แล้วแต่การ์ด
+            //string dgi8f01Data = keySetVersion + PutKeySetDat;//+ encKeyEncrypted + macKeyEncrypted + dekKeyEncrypted;
+            //string dgi8f01Length = (dgi8f01Data.Length / 2).ToString("X2"); // ความยาวเป็น byte
+
+            //string dgi8f01 = "8F01" + dgi8f01Length + dgi8f01Data;
+
+            //// ถ้ามี 7F01 (เช่นใส่ KCV หรือ metadata อื่น)
+            //string dgi7f01 = ""; // หากไม่ต้องการ ใส่ "" หรือ null
+
+            //// รวมเป็น payload
+            //string fullPayload = dgi8f01 + dgi7f01;
+            //string lc = (fullPayload.Length / 2).ToString("X2");
+
+            //string apduHex = "80E20000" + lc + fullPayload;
+            //byte[] apduBytes = Utils.HexStringToBytes(apduHex);
+
+            //byte[] updateSTOREDATA = ApduHelper.TransmitApduCommand(readerName, apduBytes);
+            //string updateHex = BitConverter.ToString(updateSTOREDATA).Replace("-", " ");
+
+            return result;
+        }
+        
+        public static string GenerateHostChallenge()
+        {
+            byte[] rand = new byte[8];
+            using (var rng = RandomNumberGenerator.Create()) rng.GetBytes(rand);
+            return BitConverter.ToString(rand).Replace("-", "");
+        }
     }
 
+
 }
+
+

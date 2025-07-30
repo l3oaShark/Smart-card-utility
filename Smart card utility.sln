@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smart_card_utility", "Smart_card_utility\Smart_card_utility.csproj", "{F07656BC-9BC5-424B-8451-32CA34AFD479}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9C9C46D4-C923-488D-8DC2-ADDCACE1541D} = {9C9C46D4-C923-488D-8DC2-ADDCACE1541D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Public key certification processing", "Public key certification processing\Public key certification processing.csproj", "{9C9C46D4-C923-488D-8DC2-ADDCACE1541D}"
 EndProject

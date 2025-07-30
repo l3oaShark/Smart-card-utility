@@ -129,6 +129,31 @@ namespace SmartCard
 
             return fullResponse.ToArray();
         }
+
+        public static byte[] BuildApdu(byte cla, byte ins, byte p1, byte p2, byte[] data = null, byte? le = null)
+        {
+            using (var ms = new System.IO.MemoryStream())
+            {
+                ms.WriteByte(cla);
+                ms.WriteByte(ins);
+                ms.WriteByte(p1);
+                ms.WriteByte(p2);
+
+                if (data != null && data.Length > 0)
+                {
+                    ms.WriteByte((byte)data.Length);  // Lc
+                    ms.Write(data, 0, data.Length);   // Data
+                }
+
+                if (le.HasValue)
+                {
+                    ms.WriteByte(le.Value);           // Le
+                }
+
+                return ms.ToArray();
+            }
+        }
+
     }
 
 }
