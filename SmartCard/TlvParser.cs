@@ -295,64 +295,75 @@ namespace SmartCard
             List<CardInfo> cardInfos = new List<CardInfo>();
             int index = 0;
             data = data.Replace(" ","").Replace("-","");
-
-            while (index < data.Length)
+            try
             {
-                // Read Tag (1 or more bytes)
-                if (index >= data.Length) break;
-
-                string length = data.Substring(index, 2);
-                index += length.Length;
-
-                string value = data.Substring(index, int.Parse(length, System.Globalization.NumberStyles.HexNumber) * 2);
-                index += value.Length;
-
-                string package = data.Substring(index, 6);
-                index += package.Length;
-
-
-                List<string> applete = new List<string>();
-                if (package.Substring(0, 2) == "01")
+                while (index < data.Length)
                 {
-                    int appleteCount = int.Parse(package.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+                    // Read Tag (1 or more bytes)
+                    if (index >= data.Length) break;
 
-                    for (int i = 0; i < appleteCount; i++)
+                    string length = data.Substring(index, 2);
+                    index += length.Length;
+                    if (int.Parse(length, System.Globalization.NumberStyles.HexNumber) * 2 >= data.Length) break;
+
+                    string value = data.Substring(index, int.Parse(length, System.Globalization.NumberStyles.HexNumber) * 2);
+                    index += value.Length;
+
+                    string package = data.Substring(index, 6);
+                    index += package.Length;
+
+
+                    List<string> applete = new List<string>();
+                    if (package.Substring(0, 2) == "01")
                     {
-                        string lenghtdata_app = data.Substring(index, 2);
-                        index += lenghtdata_app.Length;
-                        if(index+ int.Parse(lenghtdata_app, System.Globalization.NumberStyles.HexNumber) * 2 < data.Length)
-                        {
-                            string data_app = data.Substring(index, int.Parse(lenghtdata_app, System.Globalization.NumberStyles.HexNumber) * 2);
-                            index += data_app.Length;
+                        int appleteCount = int.Parse(package.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
 
-                            applete.Add(data_app);
-                        }
-                        else
+                        for (int i = 0; i < appleteCount; i++)
                         {
-                            string data_app = data.Substring(index, data.Length-index);
-                            index += data_app.Length;
+                            string lenghtdata_app = data.Substring(index, 2);
+                            index += lenghtdata_app.Length;
+                            if (index + int.Parse(lenghtdata_app, System.Globalization.NumberStyles.HexNumber) * 2 < data.Length)
+                            {
+                                string data_app = data.Substring(index, int.Parse(lenghtdata_app, System.Globalization.NumberStyles.HexNumber) * 2);
+                                index += data_app.Length;
 
-                            applete.Add(data_app);
+                                applete.Add(data_app);
+                            }
+                            else
+                            {
+                                string data_app = data.Substring(index, data.Length - index);
+                                index += data_app.Length;
+
+                                applete.Add(data_app);
+                            }
                         }
+
+                    }
+                    else if (package.Substring(0, 2) != "01")
+                    {
+                        package = string.Empty;
                     }
 
-                }
-                else if (package.Substring(0, 2) != "01")
-                {
-                    package = string.Empty;
+                    cardInfos.Add(new CardInfo
+                    {
+                        legnth = length,
+                        value = value,
+                        package = package,
+                        applete = applete
+                    });
+
                 }
 
-                cardInfos.Add(new CardInfo
-                {
-                    legnth = length,
-                    value = value,
-                    package = package,
-                    applete = applete
-                });
-                
+                return cardInfos;
+
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return cardInfos;
             }
 
-            return cardInfos;
+
         }
     }
 

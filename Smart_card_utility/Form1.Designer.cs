@@ -104,13 +104,11 @@ namespace Smart_card_utility
             this.txt_kmcKCV3 = new MaterialSkin.Controls.MaterialTextBox();
             this.txt_kmcKCV2 = new MaterialSkin.Controls.MaterialTextBox();
             this.txt_kmcKCV1 = new MaterialSkin.Controls.MaterialTextBox();
-            this.cbb_kmcValue3 = new MaterialSkin.Controls.MaterialComboBox();
-            this.cbb_kmcValue2 = new MaterialSkin.Controls.MaterialComboBox();
-            this.cbb_kmcValue1 = new MaterialSkin.Controls.MaterialComboBox();
             this.btn_readerRefresh = new MaterialSkin.Controls.MaterialButton();
             this.cbb_cardReader2 = new MaterialSkin.Controls.MaterialComboBox();
             this.materialLabel5 = new MaterialSkin.Controls.MaterialLabel();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.cbb_mode_actionkey = new MaterialSkin.Controls.MaterialComboBox();
             this.rdo_old_no_kmc = new MaterialSkin.Controls.MaterialRadioButton();
             this.panel5 = new System.Windows.Forms.Panel();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -201,7 +199,9 @@ namespace Smart_card_utility
             this.txt_DESEncryptData = new MaterialSkin.Controls.MaterialMultiLineTextBox();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.menuIconList = new System.Windows.Forms.ImageList(this.components);
-            this.cbb_mode_actionkey = new MaterialSkin.Controls.MaterialComboBox();
+            this.txt_kmcValue1 = new MaterialSkin.Controls.MaterialTextBox();
+            this.txt_kmcValue2 = new MaterialSkin.Controls.MaterialTextBox();
+            this.txt_kmcValue3 = new MaterialSkin.Controls.MaterialTextBox();
             this.contextMenuStrip1.SuspendLayout();
             this.materialTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -912,7 +912,7 @@ namespace Smart_card_utility
             this.txt_ICPersoEquipID.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_ICPersoEquipID.Hint = "IC Perso Equip ID";
             this.txt_ICPersoEquipID.LeadingIcon = null;
-            this.txt_ICPersoEquipID.Location = new System.Drawing.Point(61, 534);
+            this.txt_ICPersoEquipID.Location = new System.Drawing.Point(40, 534);
             this.txt_ICPersoEquipID.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ICPersoEquipID.MaxLength = 50;
             this.txt_ICPersoEquipID.MouseState = MaterialSkin.MouseState.OUT;
@@ -939,7 +939,7 @@ namespace Smart_card_utility
             this.txt_ICFabricator.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_ICFabricator.Multiline = false;
             this.txt_ICFabricator.Name = "txt_ICFabricator";
-            this.txt_ICFabricator.Size = new System.Drawing.Size(31, 50);
+            this.txt_ICFabricator.Size = new System.Drawing.Size(10, 50);
             this.txt_ICFabricator.TabIndex = 20;
             this.txt_ICFabricator.Text = "";
             this.txt_ICFabricator.TrailingIcon = null;
@@ -960,7 +960,7 @@ namespace Smart_card_utility
             this.txt_ICPersoDate.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_ICPersoDate.Multiline = false;
             this.txt_ICPersoDate.Name = "txt_ICPersoDate";
-            this.txt_ICPersoDate.Size = new System.Drawing.Size(31, 50);
+            this.txt_ICPersoDate.Size = new System.Drawing.Size(10, 50);
             this.txt_ICPersoDate.TabIndex = 34;
             this.txt_ICPersoDate.Text = "";
             this.txt_ICPersoDate.TrailingIcon = null;
@@ -974,7 +974,7 @@ namespace Smart_card_utility
             this.txt_osRelease_date.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_osRelease_date.Hint = "OS Release date";
             this.txt_osRelease_date.LeadingIcon = null;
-            this.txt_osRelease_date.Location = new System.Drawing.Point(60, 81);
+            this.txt_osRelease_date.Location = new System.Drawing.Point(39, 81);
             this.txt_osRelease_date.Margin = new System.Windows.Forms.Padding(4);
             this.txt_osRelease_date.MaxLength = 50;
             this.txt_osRelease_date.MouseState = MaterialSkin.MouseState.OUT;
@@ -994,7 +994,7 @@ namespace Smart_card_utility
             this.txt_ICPersonalizer.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_ICPersonalizer.Hint = "IC Personalizer";
             this.txt_ICPersonalizer.LeadingIcon = null;
-            this.txt_ICPersonalizer.Location = new System.Drawing.Point(60, 467);
+            this.txt_ICPersonalizer.Location = new System.Drawing.Point(39, 467);
             this.txt_ICPersonalizer.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ICPersonalizer.MaxLength = 50;
             this.txt_ICPersonalizer.MouseState = MaterialSkin.MouseState.OUT;
@@ -1021,7 +1021,7 @@ namespace Smart_card_utility
             this.txt_osRelease_level.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_osRelease_level.Multiline = false;
             this.txt_osRelease_level.Name = "txt_osRelease_level";
-            this.txt_osRelease_level.Size = new System.Drawing.Size(31, 50);
+            this.txt_osRelease_level.Size = new System.Drawing.Size(10, 50);
             this.txt_osRelease_level.TabIndex = 24;
             this.txt_osRelease_level.Text = "";
             this.txt_osRelease_level.TrailingIcon = null;
@@ -1042,7 +1042,7 @@ namespace Smart_card_utility
             this.txt_PrePersoEqp.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_PrePersoEqp.Multiline = false;
             this.txt_PrePersoEqp.Name = "txt_PrePersoEqp";
-            this.txt_PrePersoEqp.Size = new System.Drawing.Size(31, 50);
+            this.txt_PrePersoEqp.Size = new System.Drawing.Size(10, 50);
             this.txt_PrePersoEqp.TabIndex = 32;
             this.txt_PrePersoEqp.Text = "";
             this.txt_PrePersoEqp.TrailingIcon = null;
@@ -1056,7 +1056,7 @@ namespace Smart_card_utility
             this.txt_IC_batchIdentifier.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_IC_batchIdentifier.Hint = "IC Batch Identifier";
             this.txt_IC_batchIdentifier.LeadingIcon = null;
-            this.txt_IC_batchIdentifier.Location = new System.Drawing.Point(61, 209);
+            this.txt_IC_batchIdentifier.Location = new System.Drawing.Point(40, 209);
             this.txt_IC_batchIdentifier.Margin = new System.Windows.Forms.Padding(4);
             this.txt_IC_batchIdentifier.MaxLength = 50;
             this.txt_IC_batchIdentifier.MouseState = MaterialSkin.MouseState.OUT;
@@ -1076,7 +1076,7 @@ namespace Smart_card_utility
             this.txt_PrePersoDate.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_PrePersoDate.Hint = "IC Pre-Perso Date";
             this.txt_PrePersoDate.LeadingIcon = null;
-            this.txt_PrePersoDate.Location = new System.Drawing.Point(60, 403);
+            this.txt_PrePersoDate.Location = new System.Drawing.Point(39, 403);
             this.txt_PrePersoDate.Margin = new System.Windows.Forms.Padding(4);
             this.txt_PrePersoDate.MaxLength = 50;
             this.txt_PrePersoDate.MouseState = MaterialSkin.MouseState.OUT;
@@ -1103,7 +1103,7 @@ namespace Smart_card_utility
             this.txt_icSerailnumber.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_icSerailnumber.Multiline = false;
             this.txt_icSerailnumber.Name = "txt_icSerailnumber";
-            this.txt_icSerailnumber.Size = new System.Drawing.Size(31, 50);
+            this.txt_icSerailnumber.Size = new System.Drawing.Size(10, 50);
             this.txt_icSerailnumber.TabIndex = 26;
             this.txt_icSerailnumber.Text = "";
             this.txt_icSerailnumber.TrailingIcon = null;
@@ -1124,7 +1124,7 @@ namespace Smart_card_utility
             this.txt_ICPrePersonalizer.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_ICPrePersonalizer.Multiline = false;
             this.txt_ICPrePersonalizer.Name = "txt_ICPrePersonalizer";
-            this.txt_ICPrePersonalizer.Size = new System.Drawing.Size(31, 50);
+            this.txt_ICPrePersonalizer.Size = new System.Drawing.Size(10, 50);
             this.txt_ICPrePersonalizer.TabIndex = 30;
             this.txt_ICPrePersonalizer.Text = "";
             this.txt_ICPrePersonalizer.TrailingIcon = null;
@@ -1145,7 +1145,7 @@ namespace Smart_card_utility
             this.txt_osIdentifier.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_osIdentifier.Multiline = false;
             this.txt_osIdentifier.Name = "txt_osIdentifier";
-            this.txt_osIdentifier.Size = new System.Drawing.Size(31, 50);
+            this.txt_osIdentifier.Size = new System.Drawing.Size(10, 50);
             this.txt_osIdentifier.TabIndex = 22;
             this.txt_osIdentifier.Text = "";
             this.txt_osIdentifier.TrailingIcon = null;
@@ -1159,7 +1159,7 @@ namespace Smart_card_utility
             this.txt_ICMPDate.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_ICMPDate.Hint = "IC MP Date";
             this.txt_ICMPDate.LeadingIcon = null;
-            this.txt_ICMPDate.Location = new System.Drawing.Point(61, 273);
+            this.txt_ICMPDate.Location = new System.Drawing.Point(40, 273);
             this.txt_ICMPDate.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ICMPDate.MaxLength = 50;
             this.txt_ICMPDate.MouseState = MaterialSkin.MouseState.OUT;
@@ -1179,7 +1179,7 @@ namespace Smart_card_utility
             this.txt_ICFabricatorDate.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_ICFabricatorDate.Hint = "IC Fabricator Date";
             this.txt_ICFabricatorDate.LeadingIcon = null;
-            this.txt_ICFabricatorDate.Location = new System.Drawing.Point(60, 145);
+            this.txt_ICFabricatorDate.Location = new System.Drawing.Point(39, 145);
             this.txt_ICFabricatorDate.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ICFabricatorDate.MaxLength = 50;
             this.txt_ICFabricatorDate.MouseState = MaterialSkin.MouseState.OUT;
@@ -1199,7 +1199,7 @@ namespace Smart_card_utility
             this.txt_ICEmbeddingDate.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_ICEmbeddingDate.Hint = "IC Embedding Date";
             this.txt_ICEmbeddingDate.LeadingIcon = null;
-            this.txt_ICEmbeddingDate.Location = new System.Drawing.Point(60, 337);
+            this.txt_ICEmbeddingDate.Location = new System.Drawing.Point(39, 337);
             this.txt_ICEmbeddingDate.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ICEmbeddingDate.MaxLength = 50;
             this.txt_ICEmbeddingDate.MouseState = MaterialSkin.MouseState.OUT;
@@ -1219,7 +1219,7 @@ namespace Smart_card_utility
             this.txt_ICType.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txt_ICType.Hint = "IC Type";
             this.txt_ICType.LeadingIcon = null;
-            this.txt_ICType.Location = new System.Drawing.Point(60, 16);
+            this.txt_ICType.Location = new System.Drawing.Point(39, 16);
             this.txt_ICType.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ICType.MaxLength = 50;
             this.txt_ICType.MouseState = MaterialSkin.MouseState.OUT;
@@ -1246,7 +1246,7 @@ namespace Smart_card_utility
             this.txt_ICCManufacturer.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_ICCManufacturer.Multiline = false;
             this.txt_ICCManufacturer.Name = "txt_ICCManufacturer";
-            this.txt_ICCManufacturer.Size = new System.Drawing.Size(31, 50);
+            this.txt_ICCManufacturer.Size = new System.Drawing.Size(10, 50);
             this.txt_ICCManufacturer.TabIndex = 28;
             this.txt_ICCManufacturer.Text = "";
             this.txt_ICCManufacturer.TrailingIcon = null;
@@ -1267,7 +1267,7 @@ namespace Smart_card_utility
             this.txt_ICMod.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_ICMod.Multiline = false;
             this.txt_ICMod.Name = "txt_ICMod";
-            this.txt_ICMod.Size = new System.Drawing.Size(31, 50);
+            this.txt_ICMod.Size = new System.Drawing.Size(10, 50);
             this.txt_ICMod.TabIndex = 26;
             this.txt_ICMod.Text = "";
             this.txt_ICMod.TrailingIcon = null;
@@ -1398,15 +1398,15 @@ namespace Smart_card_utility
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.txt_kmcValue3);
+            this.groupBox4.Controls.Add(this.txt_kmcValue2);
+            this.groupBox4.Controls.Add(this.txt_kmcValue1);
             this.groupBox4.Controls.Add(this.rdb_noKMC);
             this.groupBox4.Controls.Add(this.rdb_fixedENC);
             this.groupBox4.Controls.Add(this.rdb_deriveKMC);
             this.groupBox4.Controls.Add(this.txt_kmcKCV3);
             this.groupBox4.Controls.Add(this.txt_kmcKCV2);
             this.groupBox4.Controls.Add(this.txt_kmcKCV1);
-            this.groupBox4.Controls.Add(this.cbb_kmcValue3);
-            this.groupBox4.Controls.Add(this.cbb_kmcValue2);
-            this.groupBox4.Controls.Add(this.cbb_kmcValue1);
             this.groupBox4.Location = new System.Drawing.Point(7, 63);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(591, 192);
@@ -1489,7 +1489,7 @@ namespace Smart_card_utility
             this.txt_kmcKCV3.Name = "txt_kmcKCV3";
             this.txt_kmcKCV3.Size = new System.Drawing.Size(101, 50);
             this.txt_kmcKCV3.TabIndex = 9;
-            this.txt_kmcKCV3.Text = "";
+            this.txt_kmcKCV3.Text = "8BAF47";
             this.txt_kmcKCV3.TrailingIcon = null;
             this.txt_kmcKCV3.TextChanged += new System.EventHandler(this.txt_kmcKCV3_TextChanged);
             // 
@@ -1509,7 +1509,7 @@ namespace Smart_card_utility
             this.txt_kmcKCV2.Name = "txt_kmcKCV2";
             this.txt_kmcKCV2.Size = new System.Drawing.Size(101, 50);
             this.txt_kmcKCV2.TabIndex = 8;
-            this.txt_kmcKCV2.Text = "";
+            this.txt_kmcKCV2.Text = "8BAF47";
             this.txt_kmcKCV2.TrailingIcon = null;
             this.txt_kmcKCV2.TextChanged += new System.EventHandler(this.txt_kmcKCV2_TextChanged);
             // 
@@ -1532,80 +1532,6 @@ namespace Smart_card_utility
             this.txt_kmcKCV1.Text = "8BAF47";
             this.txt_kmcKCV1.TrailingIcon = null;
             this.txt_kmcKCV1.TextChanged += new System.EventHandler(this.txt_kmcKCV1_TextChanged);
-            // 
-            // cbb_kmcValue3
-            // 
-            this.cbb_kmcValue3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbb_kmcValue3.AutoResize = false;
-            this.cbb_kmcValue3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cbb_kmcValue3.Depth = 0;
-            this.cbb_kmcValue3.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cbb_kmcValue3.DropDownHeight = 174;
-            this.cbb_kmcValue3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbb_kmcValue3.DropDownWidth = 121;
-            this.cbb_kmcValue3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cbb_kmcValue3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cbb_kmcValue3.FormattingEnabled = true;
-            this.cbb_kmcValue3.IntegralHeight = false;
-            this.cbb_kmcValue3.ItemHeight = 43;
-            this.cbb_kmcValue3.Location = new System.Drawing.Point(194, 121);
-            this.cbb_kmcValue3.MaxDropDownItems = 4;
-            this.cbb_kmcValue3.MouseState = MaterialSkin.MouseState.OUT;
-            this.cbb_kmcValue3.Name = "cbb_kmcValue3";
-            this.cbb_kmcValue3.Size = new System.Drawing.Size(266, 49);
-            this.cbb_kmcValue3.StartIndex = 0;
-            this.cbb_kmcValue3.TabIndex = 6;
-            // 
-            // cbb_kmcValue2
-            // 
-            this.cbb_kmcValue2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbb_kmcValue2.AutoResize = false;
-            this.cbb_kmcValue2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cbb_kmcValue2.Depth = 0;
-            this.cbb_kmcValue2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cbb_kmcValue2.DropDownHeight = 174;
-            this.cbb_kmcValue2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbb_kmcValue2.DropDownWidth = 121;
-            this.cbb_kmcValue2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cbb_kmcValue2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cbb_kmcValue2.FormattingEnabled = true;
-            this.cbb_kmcValue2.IntegralHeight = false;
-            this.cbb_kmcValue2.ItemHeight = 43;
-            this.cbb_kmcValue2.Location = new System.Drawing.Point(194, 66);
-            this.cbb_kmcValue2.MaxDropDownItems = 4;
-            this.cbb_kmcValue2.MouseState = MaterialSkin.MouseState.OUT;
-            this.cbb_kmcValue2.Name = "cbb_kmcValue2";
-            this.cbb_kmcValue2.Size = new System.Drawing.Size(266, 49);
-            this.cbb_kmcValue2.StartIndex = 0;
-            this.cbb_kmcValue2.TabIndex = 4;
-            // 
-            // cbb_kmcValue1
-            // 
-            this.cbb_kmcValue1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbb_kmcValue1.AutoResize = false;
-            this.cbb_kmcValue1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cbb_kmcValue1.Depth = 0;
-            this.cbb_kmcValue1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cbb_kmcValue1.DropDownHeight = 174;
-            this.cbb_kmcValue1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbb_kmcValue1.DropDownWidth = 121;
-            this.cbb_kmcValue1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cbb_kmcValue1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cbb_kmcValue1.FormattingEnabled = true;
-            this.cbb_kmcValue1.IntegralHeight = false;
-            this.cbb_kmcValue1.ItemHeight = 43;
-            this.cbb_kmcValue1.Items.AddRange(new object[] {
-            "404142434445464748494A4B4C4D4E4F"});
-            this.cbb_kmcValue1.Location = new System.Drawing.Point(194, 11);
-            this.cbb_kmcValue1.MaxDropDownItems = 4;
-            this.cbb_kmcValue1.MouseState = MaterialSkin.MouseState.OUT;
-            this.cbb_kmcValue1.Name = "cbb_kmcValue1";
-            this.cbb_kmcValue1.Size = new System.Drawing.Size(266, 49);
-            this.cbb_kmcValue1.StartIndex = 0;
-            this.cbb_kmcValue1.TabIndex = 5;
             // 
             // btn_readerRefresh
             // 
@@ -1693,6 +1619,29 @@ namespace Smart_card_utility
             this.tabPage4.Text = "Update CM MAster Key";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // cbb_mode_actionkey
+            // 
+            this.cbb_mode_actionkey.AutoResize = true;
+            this.cbb_mode_actionkey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cbb_mode_actionkey.Depth = 0;
+            this.cbb_mode_actionkey.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cbb_mode_actionkey.DropDownHeight = 174;
+            this.cbb_mode_actionkey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbb_mode_actionkey.DropDownWidth = 121;
+            this.cbb_mode_actionkey.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cbb_mode_actionkey.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cbb_mode_actionkey.FormattingEnabled = true;
+            this.cbb_mode_actionkey.Hint = "Mode";
+            this.cbb_mode_actionkey.IntegralHeight = false;
+            this.cbb_mode_actionkey.ItemHeight = 43;
+            this.cbb_mode_actionkey.Location = new System.Drawing.Point(384, 6);
+            this.cbb_mode_actionkey.MaxDropDownItems = 4;
+            this.cbb_mode_actionkey.MouseState = MaterialSkin.MouseState.OUT;
+            this.cbb_mode_actionkey.Name = "cbb_mode_actionkey";
+            this.cbb_mode_actionkey.Size = new System.Drawing.Size(121, 49);
+            this.cbb_mode_actionkey.StartIndex = 0;
+            this.cbb_mode_actionkey.TabIndex = 16;
+            // 
             // rdo_old_no_kmc
             // 
             this.rdo_old_no_kmc.AutoSize = true;
@@ -1774,7 +1723,7 @@ namespace Smart_card_utility
             this.txt_new_kmc_key.Hint = "Key";
             this.txt_new_kmc_key.LeadingIcon = null;
             this.txt_new_kmc_key.Location = new System.Drawing.Point(7, 81);
-            this.txt_new_kmc_key.MaxLength = 6;
+            this.txt_new_kmc_key.MaxLength = 32;
             this.txt_new_kmc_key.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_new_kmc_key.Multiline = false;
             this.txt_new_kmc_key.Name = "txt_new_kmc_key";
@@ -1902,7 +1851,7 @@ namespace Smart_card_utility
             this.txt_old_kmc_key.Hint = "Key";
             this.txt_old_kmc_key.LeadingIcon = null;
             this.txt_old_kmc_key.Location = new System.Drawing.Point(8, 81);
-            this.txt_old_kmc_key.MaxLength = 6;
+            this.txt_old_kmc_key.MaxLength = 32;
             this.txt_old_kmc_key.MouseState = MaterialSkin.MouseState.OUT;
             this.txt_old_kmc_key.Multiline = false;
             this.txt_old_kmc_key.Name = "txt_old_kmc_key";
@@ -3351,28 +3300,64 @@ namespace Smart_card_utility
             this.menuIconList.Images.SetKeyName(4, "smartcard_reader.png");
             this.menuIconList.Images.SetKeyName(5, "des.png");
             // 
-            // cbb_mode_actionkey
+            // txt_kmcValue1
             // 
-            this.cbb_mode_actionkey.AutoResize = true;
-            this.cbb_mode_actionkey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cbb_mode_actionkey.Depth = 0;
-            this.cbb_mode_actionkey.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cbb_mode_actionkey.DropDownHeight = 174;
-            this.cbb_mode_actionkey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbb_mode_actionkey.DropDownWidth = 121;
-            this.cbb_mode_actionkey.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cbb_mode_actionkey.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cbb_mode_actionkey.FormattingEnabled = true;
-            this.cbb_mode_actionkey.Hint = "Mode";
-            this.cbb_mode_actionkey.IntegralHeight = false;
-            this.cbb_mode_actionkey.ItemHeight = 43;
-            this.cbb_mode_actionkey.Location = new System.Drawing.Point(384, 6);
-            this.cbb_mode_actionkey.MaxDropDownItems = 4;
-            this.cbb_mode_actionkey.MouseState = MaterialSkin.MouseState.OUT;
-            this.cbb_mode_actionkey.Name = "cbb_mode_actionkey";
-            this.cbb_mode_actionkey.Size = new System.Drawing.Size(121, 49);
-            this.cbb_mode_actionkey.StartIndex = 0;
-            this.cbb_mode_actionkey.TabIndex = 16;
+            this.txt_kmcValue1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_kmcValue1.AnimateReadOnly = false;
+            this.txt_kmcValue1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txt_kmcValue1.Depth = 0;
+            this.txt_kmcValue1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.6F);
+            this.txt_kmcValue1.Hint = "Key";
+            this.txt_kmcValue1.LeadingIcon = null;
+            this.txt_kmcValue1.Location = new System.Drawing.Point(194, 11);
+            this.txt_kmcValue1.MaxLength = 32;
+            this.txt_kmcValue1.MouseState = MaterialSkin.MouseState.OUT;
+            this.txt_kmcValue1.Multiline = false;
+            this.txt_kmcValue1.Name = "txt_kmcValue1";
+            this.txt_kmcValue1.Size = new System.Drawing.Size(275, 50);
+            this.txt_kmcValue1.TabIndex = 13;
+            this.txt_kmcValue1.Text = "404142434445464748494A4B4C4D4E4F";
+            this.txt_kmcValue1.TrailingIcon = null;
+            // 
+            // txt_kmcValue2
+            // 
+            this.txt_kmcValue2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_kmcValue2.AnimateReadOnly = false;
+            this.txt_kmcValue2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txt_kmcValue2.Depth = 0;
+            this.txt_kmcValue2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.6F);
+            this.txt_kmcValue2.Hint = "Key";
+            this.txt_kmcValue2.LeadingIcon = null;
+            this.txt_kmcValue2.Location = new System.Drawing.Point(194, 66);
+            this.txt_kmcValue2.MaxLength = 32;
+            this.txt_kmcValue2.MouseState = MaterialSkin.MouseState.OUT;
+            this.txt_kmcValue2.Multiline = false;
+            this.txt_kmcValue2.Name = "txt_kmcValue2";
+            this.txt_kmcValue2.Size = new System.Drawing.Size(275, 50);
+            this.txt_kmcValue2.TabIndex = 14;
+            this.txt_kmcValue2.Text = "404142434445464748494A4B4C4D4E4F";
+            this.txt_kmcValue2.TrailingIcon = null;
+            // 
+            // txt_kmcValue3
+            // 
+            this.txt_kmcValue3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_kmcValue3.AnimateReadOnly = false;
+            this.txt_kmcValue3.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txt_kmcValue3.Depth = 0;
+            this.txt_kmcValue3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.6F);
+            this.txt_kmcValue3.Hint = "Key";
+            this.txt_kmcValue3.LeadingIcon = null;
+            this.txt_kmcValue3.Location = new System.Drawing.Point(194, 122);
+            this.txt_kmcValue3.MaxLength = 32;
+            this.txt_kmcValue3.MouseState = MaterialSkin.MouseState.OUT;
+            this.txt_kmcValue3.Multiline = false;
+            this.txt_kmcValue3.Name = "txt_kmcValue3";
+            this.txt_kmcValue3.Size = new System.Drawing.Size(275, 50);
+            this.txt_kmcValue3.TabIndex = 15;
+            this.txt_kmcValue3.Text = "404142434445464748494A4B4C4D4E4F";
+            this.txt_kmcValue3.TrailingIcon = null;
             // 
             // Main
             // 
@@ -3482,9 +3467,6 @@ namespace Smart_card_utility
         private MaterialSkin.Controls.MaterialComboBox cbb_cardReader2;
         private GroupBox groupBox4;
         private MaterialSkin.Controls.MaterialTextBox txt_kmcKCV1;
-        private MaterialSkin.Controls.MaterialComboBox cbb_kmcValue3;
-        private MaterialSkin.Controls.MaterialComboBox cbb_kmcValue2;
-        private MaterialSkin.Controls.MaterialComboBox cbb_kmcValue1;
         private MaterialSkin.Controls.MaterialButton btn_readerRefresh;
         private MaterialSkin.Controls.MaterialRadioButton rdb_noKMC;
         private MaterialSkin.Controls.MaterialRadioButton rdb_fixedENC;
@@ -3609,6 +3591,9 @@ namespace Smart_card_utility
         private MaterialSkin.Controls.MaterialComboBox cbb_old_type;
         private MaterialSkin.Controls.MaterialComboBox cbb_new_type;
         private MaterialSkin.Controls.MaterialComboBox cbb_mode_actionkey;
+        private MaterialSkin.Controls.MaterialTextBox txt_kmcValue1;
+        private MaterialSkin.Controls.MaterialTextBox txt_kmcValue2;
+        private MaterialSkin.Controls.MaterialTextBox txt_kmcValue3;
     }
 }
 

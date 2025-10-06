@@ -82,6 +82,7 @@ d0680ef0dbc1dac3f768ac74a955d33a2b9f8819af0232890ed9a57e02c68377f38c9ed2a8344999
         }
 
 
+
         private static Dictionary<string, string> ParseTextToDictionary(string text)
         {
             var dict = new Dictionary<string, string>();
@@ -113,7 +114,14 @@ d0680ef0dbc1dac3f768ac74a955d33a2b9f8819af0232890ed9a57e02c68377f38c9ed2a8344999
             return prop;
         }
 
+
+
     }
+
+
+
+    
+
     public class Properties_publickey
     {
         //Unsigned Pulic Key Input Extension
@@ -218,4 +226,260 @@ d0680ef0dbc1dac3f768ac74a955d33a2b9f8819af0232890ed9a57e02c68377f38c9ed2a8344999
         [Browsable(false)] // ซ่อน Property นี้จาก PropertyGrid
         public string HiddenProperty { get; set; }
     }
+
+    
+
+    public class Properties_Files
+    {
+        [Category("Unsigned Pulic Key Input Extension")]
+        [DisplayName("Recording Head")]
+        [Description("Recording Head")]
+        public string Unsigned_Recording_Head { get; set; }
+
+        //Unsigned Pulic Key Input Extension
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Value")]
+        [Description("Encrypted Key Value.")]
+        public string Key_Value { get; set; }
+
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Transport Key")]
+        [Description("Encrypted Key Transport Key")]
+        public string Transport_Key { get; set; }
+
+        [Category("Encrypted")]
+        [DisplayName("Issue Public Key Length")]
+        [Description("Issue Public Key Length")]
+        public string Issue_Public_Key_Length { get; set; }
+        //     [Category("Unsigned Pulic Key Input Extension")]
+        // [DisplayName("Issue Public Key Length")]
+        // [Description("Issue Public Key Length")]
+        // public string Issuer_Public_Key_Length { get; set; }
+
+
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Modulus")]
+        [Description("Public Key Modulus")]
+        public string Issuer_Public_Key_Modulus { get; set; }
+        //     [Category("Unsigned Pulic Key Input Extension")]
+        // [DisplayName("Issuer Public Key Modulus")]
+        // [Description("Public Key Modulus")]
+        // public string Issuer_Public_Key_Modulus { get; set; }
+
+        [Category("Unsigned Pulic Key Input Extension")]
+        [DisplayName("Issuer Public Key Exponent Length")]
+        [Description("Issuer Public Key Exponent Length.")]
+        public string Issuer_Public_Key_Exponent_Length { get; set; }
+
+
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Exponent")]
+        [Description("Public Key Exponent")]
+        public string Issuer_Public_Key_Exponent { get; set; }
+        //public bool Unsigned_Pulic_Key_Input_Extension { get; set; } = true;
+        //     [Category("Unsigned Pulic Key Input Extension")]
+        // [DisplayName("Issuer Public Key Exponent")]
+        // [Description("Public Key Exponent")]
+        // public string Issuer_Public_Key_Exponent { get; set; }
+
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Check Value")]
+        [Description("Encrypted Key Check Value.")]
+        public string Issuer_Public_Key_check { get; set; }
+
+        [Category("Unsigned Pulic Key Input Extension")]
+        [DisplayName("Issuer Public Key Algorithum Identifier")]
+        [Description("Issuer Public Key Algorithum Identifier.")]
+        public string Issuer_Public_Key_Algorithum_Identifier { get; set; }
+
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Method")]
+        [Description("Encrypted Key Method.")]
+        public string Issuer_Public_Key_Algorithum_Indicator { get; set; }
+
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Name")]
+        [Description("Encrypted Key Name.")]
+        public string Key_Name { get; set; }
+
+
+        //Self-signed Public Key Data
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Usage")]
+        [Description("Encrypted Key Usage.")]
+        public string Key_Usage { get; set; }
+
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Description")]
+        [Description("Encrypted Key Description.")]
+        public string Key_Description { get; set; }
+
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Format Name")]
+        [Description("Encrypted Key Format Name.")]
+        public string Key_Format_Name { get; set; }
+
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Format ID")]
+        [Description("Encrypted Key Format ID.")]
+        public string Key_Format_ID { get; set; }
+
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Size")]
+        [Description("Encrypted Key Size.")]
+        public string Key_Size { get; set; }
+
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Serial Number")]
+        [Description("Encrypted Key Serial Number.")]
+        public string Key_Serial_Number { get; set; }
+
+        [Category("Encrypted")]
+        [DisplayName("Encrypted Key Tracking Number")]
+        [Description("Encrypted Key Tracking Number.")]
+        public string Key_Tracking_Number { get; set; }
+        //     [Category("Unsigned Pulic Key Input Extension")]
+        // [DisplayName("Certificate Serial Number")]
+        // [Description("Certificate Serial Number.")]
+        // public string Unsigned_Certificate_Serial_Number { get; set; }
+
+        [Category("Self-signed Public Key Data")]
+        [DisplayName("Readcording Head")]
+        [Description("Readcording Head.")]
+        public string Self_signed_Recording_head { get; set; }
+
+        [Category("Self-signed Public Key Data")]
+        [DisplayName("Service Identifier")]
+        [Description("Service Identifier.")]
+        public string Service_Identifier { get; set; }
+
+        [Category("Encryption")]
+        [DisplayName("Encryption Key Name")]
+        [Description("Encryption Key Name.")]
+        public string Encryption_Key_Name { get; set; }
+
+        [Category("Encryption")]
+        [DisplayName("Encryption Key Version")]
+        [Description("Encryption Key Version.")]
+        public string Encryption_Key_Version { get; set; }
+
+        [Category("Encryption")]
+        [DisplayName("Encryption Key Usage")]
+        [Description("Encryption Key Usage.")]
+        public string Encryption_Key_Usage { get; set; }
+
+        [Category("Encryption")]
+        [DisplayName("Encryption Key Description")]
+        [Description("Encryption Key Description.")]
+        public string Encryption_Key_Description { get; set; }
+
+        [Category("Encryption")]
+        [DisplayName("Encryption Key Type")]
+        [Description("Encryption Key Type.")]
+        public string Encryption_Key_Type { get; set; }
+
+        [Category("Self-signed Public Key Data")]
+        [DisplayName("Certificate Format")]
+        [Description("Certificate Format.")]
+        public string Certificate_Format { get; set; }
+
+        [Category("Self-signed Public Key Data")]
+        [DisplayName("BIN")]
+        [Description("BIN.")]
+        public string BIN { get; set; }
+
+        [Category("Self-signed Public Key Data")]
+        [DisplayName("Certificate Expiration Date")]
+        [Description("Certificate Expiration Date.")]
+        public string Certificate_Expiration_Date { get; set; }
+
+        [Category("Self-signed Public Key Data")]
+        [DisplayName("Certificate Serial Number")]
+        [Description("Certificate Serial Number.")]
+        public string Self_signed_Certificate_Serial_Number { get; set; }
+
+        [Category("Self-signed Public Key Data")]
+        [DisplayName("Hash Algorithim Indicator")]
+        [Description("Hash Algorithim Indicator.")]
+        public string Hash_Algorithim_Indicator { get; set; }
+
+        [Category("Self-signed Public Key Data")]
+        [DisplayName("Issuer Public Key Algorithm Indicator")]
+        [Description("Issuer Public Key Algorithm Indicator.")]
+        public string Issuer_Public_Key_Algorithm_Indicator { get; set; }
+
+        [Category("Self-signed Public Key Data")]
+        [DisplayName("Issuer Public Key Length")]
+        [Description("Issuer Public Key Length.")]
+        public string Self_Issuer_Public_Key_Length { get; set; }
+
+        [Category("Self-signed Public Key Data")]
+        [DisplayName("Issuer Public Key Exponent Length")]
+        [Description("Issuer Public Key Exponent Length.")]
+        public string Self_Issuer_Public_Key_Exponent_Length { get; set; }
+
+        [Category("Self-signed Public Key Data")]
+        [DisplayName("Leftmost Digis of the Issuer Public Key")]
+        [Description("Leftmost Digis of the Issuer Public Key.")]
+        public string Leftmost_Digis_of_the_Issuer_Public_Key { get; set; }
+
+        [Category("Self-signed Public Key Data")]
+        [DisplayName("Issuer Public Key Exponent")]
+        [Description("Issuer Public Key Exponent.")]
+        public string Self_Issuer_Public_Key_Exponent { get; set; }
+
+        [Category("Self-signed Public Key Data")]
+        [DisplayName("Hash Result")]
+        [Description("Hash Result")]
+        public string Hash_Result { get; set; }
+
+        [Category("smart cps v1 ipk")]
+        [DisplayName("RSA_PRIVATEEXP_enc")]
+        [Description("RSA_PRIVATEEXP_enc")]
+        public string RSA_PRIVATEEXP_enc { get; set; }
+
+        [Category("smart cps v1 ipk")]
+        [DisplayName("RSA_P_enc")]
+        [Description("RSA_P_enc")]
+        public string RSA_P_enc { get; set; }
+
+        [Category("smart cps v1 ipk")]
+        [DisplayName("RSA_Q_enc")]
+        [Description("RSA_Q_enc")]
+        public string RSA_Q_enc { get; set; }
+
+        [Category("smart cps v1 ipk")]
+        [DisplayName("RSA_DP_enc")]
+        [Description("RSA_DP_enc")]
+        public string RSA_DP_enc { get; set; }
+
+        [Category("smart cps v1 ipk")]
+        [DisplayName("RSA_DQ_enc")]
+        [Description("RSA_DQ_enc")]
+        public string RSA_DQ_enc { get; set; }
+
+
+        [Category("smart cps v1 ipk")]
+        [DisplayName("RSA_Q_INV_enc")]
+        [Description("RSA_Q_INV_enc")]
+        public string RSA_Q_INV_enc { get; set; }
+
+
+        [Category("smart cps v1 ipk")]
+        [DisplayName("ChainingMode")]
+        [Description("ChainingMode")]
+        public string ChainingMode { get; set; }
+
+        [Category("smart cps v1 ipk")]
+        [DisplayName("PadMode")]
+        [Description("PadMode")]
+        public string PadMode { get; set; }
+
+        [Category("smart cps v1 ipk")]
+        [DisplayName("KeyCheckValue_KEK")]
+        [Description("KeyCheckValue_KEK")]
+        public string KeyCheckValue_KEK { get; set; }
+
+    }
+
 }

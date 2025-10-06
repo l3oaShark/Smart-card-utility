@@ -50,7 +50,7 @@ namespace SmartCard
             //byte[] response_ISD = ApduHelper.TransmitApduCommand(readerName, Utils.HexStringToBytes("80 F2 80 00 02 4F 00"));
             //string isd = BitConverter.ToString(response_ISD).Replace("-", "");
 
-            string statusAuth = Authenticate.Auto_Authenticate(readerName, key);
+            string statusAuth = Authenticate.Auto_Authenticate(readerName, key).Replace(" ","");
             if (statusAuth != "9000")
             {
                 throw new Exception("Authentication failed");

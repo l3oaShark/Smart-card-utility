@@ -16,6 +16,7 @@ using static SmartCard.Authenticate;
 using static SmartCard.TlvParser;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Reflection;
 
 namespace Smart_card_utility
 {
@@ -101,13 +102,14 @@ namespace Smart_card_utility
             }
 
             cbb_mode_actionkey.DataSource = Enum.GetValues(typeof(Mode_ActionKey));
-            cbb_kmcValue1.Visible = true;
+            txt_kmcValue1.Visible = true;
+
             txt_kmcKCV1.Visible = true;
 
-            cbb_kmcValue2.Visible = false;
+            txt_kmcValue2.Visible = false;
             txt_kmcKCV2.Visible = false;
 
-            cbb_kmcValue3.Visible = false;
+            txt_kmcValue3.Visible = false;
             txt_kmcKCV3.Visible = false;
         }
         private void LoadReadersToComboBox()
@@ -161,6 +163,12 @@ namespace Smart_card_utility
 
         private void Main_Load(object sender, EventArgs e)
         {
+
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+
+            // ตั้งชื่อ Title
+            this.Text = $"Smart card utility v{version}";
+
             materialTabControl1.SelectedIndex = 0;
             if (cbb_system.Text == "NBS")
             {
@@ -193,20 +201,34 @@ namespace Smart_card_utility
         private void verify_Click(object sender, EventArgs e)
         {
             PublicKeyProcessor processor = new PublicKeyProcessor();
-            if (cbb_system.Text == "NBS")
+            try
             {
-                List<NBSCompareResults> compareResults = processor.NBSComparePkiInp(pkiFile, inpFile);
-                dt_gv.DataSource = compareResults;
-            }
-            else if (cbb_system.Text == "Smart CPS v1")
-            {
-                List<NBSCompareResults> compareResults = processor.CPSv1ComparePkiInp(pkiFile, inpFile);
-                dt_gv.DataSource = compareResults;
-            }
-            else if (cbb_system.Text == "Smart CPS v2")
-            {
+                if (cbb_system.Text == "NBS")
+                {
+                    List<NBSCompareResults> compareResults = processor.NBSComparePkiInp(pkiFile, inpFile);
+                    var orderedResults = compareResults
+                        .OrderBy(r =>
+                            r.Status == "Matched" ? 0 :
+                            r.Status == "Unmatched" ? 1 : 2
+                        )
+                        .ToList();
+                    dt_gv.DataSource = orderedResults;
+                }
+                else if (cbb_system.Text == "Smart CPS v1")
+                {
+                    List<NBSCompareResults> compareResults = processor.CPSv1ComparePkiInp(pkiFile, inpFile);
+                    dt_gv.DataSource = compareResults;
+                }
+                else if (cbb_system.Text == "Smart CPS v2")
+                {
 
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
 
         }
         private List<Properties_Files> allFiles = new List<Properties_Files>();
@@ -219,6 +241,9 @@ namespace Smart_card_utility
         }
         private void OpenFile1_Click(object sender, EventArgs e)
         {
+            allFiles.Clear();
+            dt_gv.DataSource = null;
+
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -229,26 +254,34 @@ namespace Smart_card_utility
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    string selectedFile = openFileDialog.FileName;
-                    filepki = openFileDialog.FileName;
-                    if (cbb_system.Text == "NBS")
+                    try
                     {
-                        pkiFile = PublicKeyProcessor.LoadFromTextFileNBSPki(filepki);
-                    }
-                    else if (cbb_system.Text == "Smart CPS v1")
-                    {
-                        pkiFile = PublicKeyProcessor.LoadFromTextFileSmartCPSv1Pki(filepki);
-                    }
-                    else if (cbb_system.Text == "Smart CPS v2")
-                    {
+                        string selectedFile = openFileDialog.FileName;
+                        filepki = openFileDialog.FileName;
+                        if (cbb_system.Text == "NBS")
+                        {
+                            pkiFile = PublicKeyProcessor.LoadFromTextFileNBSPki(filepki);
+                        }
+                        else if (cbb_system.Text == "Smart CPS v1")
+                        {
+                            pkiFile = PublicKeyProcessor.LoadFromTextFileSmartCPSv1Pki(filepki);
+                        }
+                        else if (cbb_system.Text == "Smart CPS v2")
+                        {
 
+                        }
+
+                        if (pkiFile != null)
+                        {
+                            allFiles.Add(pkiFile);
+                            RefreshGridView();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
 
-                    if (pkiFile != null)
-                    {
-                        allFiles.Add(pkiFile);
-                        RefreshGridView();
-                    }
                 }
             }
         }
@@ -266,12 +299,21 @@ namespace Smart_card_utility
                 {
                     string selectedFile = openFileDialog.FileName;
                     fileINP = openFileDialog.FileName;
-                    inpFile = PublicKeyProcessor.LoadFromTextFileINP(fileINP);
-                    if (inpFile != null)
+                    try
                     {
-                        allFiles.Add(inpFile);
-                        RefreshGridView();
+                        inpFile = PublicKeyProcessor.LoadFromTextFileINP(fileINP);
+                        if (inpFile != null)
+                        {
+                            allFiles.Add(inpFile);
+                            RefreshGridView();
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    
                 }
             }
         }
@@ -314,6 +356,8 @@ namespace Smart_card_utility
 
         private void cbb_system_SelectedIndexChanged(object sender, EventArgs e)
         {
+            allFiles.Clear();
+            dt_gv.DataSource = null;
             if (cbb_system.Text == "NBS")
             {
                 OpenFile1.Text = "Open File .IPK";
@@ -335,6 +379,7 @@ namespace Smart_card_utility
                 customDesc = "Custom files (*.kekexe;*.inp)";
                 customPattern = "*.kekexe;*.inp";
             }
+
         }
 
         private void tabPage1_Click(object sender, EventArgs e)
@@ -952,7 +997,7 @@ namespace Smart_card_utility
 
                     var (cardInfo, cplc, apps, aid, atr) = SmartCardInfo.ReadCardInfo(
                     cbb_cardReader2.Text,
-                    cbb_kmcValue1.Text,
+                    txt_kmcValue1.Text,
                     HexStringToByteArray(txt_kmcKCV1.Text)
                      );
                     txt_ATR.Text = atr;
@@ -977,13 +1022,13 @@ namespace Smart_card_utility
                 rdb_fixedENC.Checked = false;
                 rdb_noKMC.Checked = false;
 
-                cbb_kmcValue1.Visible = true;
+                txt_kmcValue1.Visible = true;
                 txt_kmcKCV1.Visible = true;
 
-                cbb_kmcValue2.Visible = false;
+                txt_kmcValue2.Visible = false;
                 txt_kmcKCV2.Visible = false;
 
-                cbb_kmcValue3.Visible = false;
+                txt_kmcValue3.Visible = false;
                 txt_kmcKCV3.Visible = false;
             }
 
@@ -997,13 +1042,13 @@ namespace Smart_card_utility
                 rdb_deriveKMC.Checked = false;
                 rdb_noKMC.Checked = false;
 
-                cbb_kmcValue1.Visible = true;
+                txt_kmcValue1.Visible = true;
                 txt_kmcKCV1.Visible = true;
 
-                cbb_kmcValue2.Visible = true;
+                txt_kmcValue2.Visible = true;
                 txt_kmcKCV2.Visible = true;
 
-                cbb_kmcValue3.Visible = false;
+                txt_kmcValue3.Visible = false;
                 txt_kmcKCV3.Visible = false;
             }
 
@@ -1017,13 +1062,13 @@ namespace Smart_card_utility
                 rdb_fixedENC.Checked = false;
                 rdb_deriveKMC.Checked = false;
 
-                cbb_kmcValue1.Visible = false;
+                txt_kmcValue1.Visible = false;
                 txt_kmcKCV1.Visible = false;
 
-                cbb_kmcValue2.Visible = false;
+                txt_kmcValue2.Visible = false;
                 txt_kmcKCV2.Visible = false;
 
-                cbb_kmcValue3.Visible = false;
+                txt_kmcValue3.Visible = false;
                 txt_kmcKCV3.Visible = false;
             }
         }
@@ -1055,7 +1100,7 @@ namespace Smart_card_utility
             string hex3 = BitConverter.ToString(response3).Replace("-", " ");
 
             string host_challenge = "0000000000000000";
-            string data_auth = Authenticate.Exthernal_Authenticate(hex3, cbb_kmcValue1.Text, "", host_challenge, Authenticate.Mode_Derivation.CPG211);
+            string data_auth = Authenticate.Exthernal_Authenticate(hex3, txt_kmcValue1.Text, "", host_challenge, Authenticate.Mode_Derivation.CPG211);
 
             byte[] responseAuth = ApduHelper.TransmitApduCommand(cbb_cardReader2.Text, Utils.HexStringToBytes(data_auth));
 
@@ -1069,6 +1114,26 @@ namespace Smart_card_utility
         private void btn_readerRefresh_Click(object sender, EventArgs e)
         {
             LoadReadersToComboBox();
+            tv_card.Nodes.Clear();
+            txt_ATR.Clear();
+            txt_ICFabricator.Clear();
+            txt_ICType.Clear();
+            txt_osIdentifier.Clear();
+            txt_osRelease_date.Clear();
+            txt_osRelease_level.Clear();
+            txt_ICFabricatorDate.Clear();
+            txt_icSerailnumber.Clear();
+            txt_IC_batchIdentifier.Clear();
+            txt_ICMod.Clear();
+            txt_ICMPDate.Clear();
+            txt_ICCManufacturer.Clear();
+            txt_ICEmbeddingDate.Clear();
+            txt_ICPrePersonalizer.Clear();
+            txt_PrePersoDate.Clear();
+            txt_PrePersoEqp.Clear();
+            txt_ICPersonalizer.Clear();
+            txt_ICPersoDate.Clear();
+            txt_ICPersoEquipID.Clear();
         }
 
         private void btn_refresh2_Click(object sender, EventArgs e)
@@ -1081,7 +1146,7 @@ namespace Smart_card_utility
             DialogResult result = MessageBox.Show("Are you sure you want to delete this application?: " + application[0].app, "confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (result == DialogResult.Yes)
             {
-                bool deleted = SmartCardManager.DeleteApp(cbb_cardReader2.Text, cbb_kmcValue1.Text, application);
+                bool deleted = SmartCardManager.DeleteApp(cbb_cardReader2.Text, txt_kmcValue1.Text, application);
 
                 if (deleted)
                 {
